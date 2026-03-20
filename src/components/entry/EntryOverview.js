@@ -21,6 +21,7 @@ import { useIsDesktop, useIsEmbed } from '../../utils/useBreakpoint'
 import { theme } from '../ui/GlobalStyle'
 import IconBesideText from '../ui/IconBesideText'
 import { ReportButton } from './overview/ReportButton'
+import SaveToListButton from './overview/SaveToListButton'
 import Tags from './overview/Tags'
 import TypesHeader from './overview/TypesHeader'
 import { ReviewButton } from './ReviewButton'
@@ -248,6 +249,7 @@ const EntryOverview = () => {
           <div>
             <ReviewButton />
             <ReportButton />
+            <SaveToListButton locationId={locationId} />
           </div>
         </Description>
       </>
