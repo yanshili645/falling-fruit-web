@@ -11,29 +11,13 @@ import {
   getListsForLocation,
   toggleLocationInList,
 } from '../../../utils/locationLists'
+import Button from '../../ui/Button'
 
 const LISTS = ['Favourites', 'Want to visit', 'Grafted in 2025']
 
 const Wrapper = styled.div`
   position: relative;
   display: inline-block;
-`
-
-const SaveButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: 1px solid ${({ theme }) => theme.secondaryText};
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-  color: ${({ theme }) => theme.secondaryText};
-  font-size: 0.9rem;
-
-  &:hover {
-    background: ${({ theme }) => theme.secondaryBackground ?? '#f5f5f5'};
-  }
 `
 
 const Dropdown = styled.div`
@@ -118,10 +102,13 @@ const SaveToListButton = ({ locationId }) => {
 
   return (
     <Wrapper ref={wrapperRef}>
-      <SaveButton onClick={() => setOpen((o) => !o)}>
-        {isSavedToAny ? <BookmarkAlt size={18} /> : <BookmarkPlus size={18} />}
+      <Button
+        leftIcon={isSavedToAny ? <BookmarkAlt /> : <BookmarkPlus />}
+        secondary
+        onClick={() => setOpen((o) => !o)}
+      >
         {isSavedToAny ? 'Saved' : 'Save'}
-      </SaveButton>
+      </Button>
       {open && (
         <Dropdown>
           {LISTS.map((listName) => {
