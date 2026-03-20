@@ -1,9 +1,5 @@
-import {
-  BookmarkAlt,
-  BookmarkPlus,
-  Check,
-  Plus,
-} from '@styled-icons/boxicons-regular'
+import { Bookmark, Plus } from '@styled-icons/boxicons-regular'
+import { Bookmark as BookmarkSolid } from '@styled-icons/boxicons-solid'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
@@ -103,7 +99,7 @@ const SaveToListButton = ({ locationId }) => {
   return (
     <Wrapper ref={wrapperRef}>
       <Button
-        leftIcon={isSavedToAny ? <BookmarkAlt /> : <BookmarkPlus />}
+        leftIcon={isSavedToAny ? <BookmarkSolid /> : <Bookmark />}
         secondary
         onClick={() => setOpen((o) => !o)}
       >
@@ -119,7 +115,7 @@ const SaveToListButton = ({ locationId }) => {
                 checked={checked}
                 onClick={() => handleToggle(listName)}
               >
-                {checked ? <Check size={16} /> : <BookmarkAlt size={16} />}
+                {checked ? <BookmarkSolid size={16} /> : <Bookmark size={16} />}
                 {listName}
               </ListItem>
             )
