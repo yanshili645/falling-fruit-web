@@ -37,8 +37,7 @@ const ListItem = styled.button`
   gap: 10px;
   width: 100%;
   padding: 10px 14px;
-  background: ${({ checked }) =>
-    checked ? theme.secondaryBackground : 'none'};
+  background: ${({ checked }) => (checked ? theme.transparentOrange : 'none')};
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
@@ -49,7 +48,7 @@ const ListItem = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background: ${theme.navBackground};
+    background: ${theme.transparentBlue};
   }
 
   svg {
