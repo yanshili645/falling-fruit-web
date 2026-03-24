@@ -72,7 +72,28 @@ const AddNewItem = styled(ListItem)`
   }
 `
 
-const SaveToListButton = ({ locationId }) => {
+/**
+ * Stacks both label strings on top of each other so the button always
+ * reserves space for whichever is wider, regardless of translation.
+ * The inactive label is hidden with visibility:hidden (still takes up space).
+ */
+const ButtonLabelWrapper = styled.span`
+  display: inline-grid;
+
+  & > span {
+    grid-area: 1 / 1;
+  }
+`
+
+const ButtonLabel = styled.span`
+  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
+`
+
+const SaveToListButton = ({
+  locationId,
+  saveLabel = 'Save',
+  savedLabel = 'Saved',
+}) => {
   const [open, setOpen] = useState(false)
   const [savedLists, setSavedLists] = useState([])
   const wrapperRef = useRef(null)
@@ -112,7 +133,10 @@ const SaveToListButton = ({ locationId }) => {
         secondary
         onClick={() => setOpen((o) => !o)}
       >
-        {isSavedToAny ? 'Saved' : 'Save'}
+        <ButtonLabelWrapper>
+          <ButtonLabel visible={!isSavedToAny}>{saveLabel}</ButtonLabel>
+          <ButtonLabel visible={isSavedToAny}>{savedLabel}</ButtonLabel>
+        </ButtonLabelWrapper>
       </Button>
       {open && (
         <Dropdown>
