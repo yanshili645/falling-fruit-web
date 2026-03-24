@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 const Dropdown = styled.div`
   position: absolute;
   top: calc(100% + 4px);
-  left: 0;
+  right: 0;
   z-index: 100;
   background: white;
   border: 1px solid #ddd;
