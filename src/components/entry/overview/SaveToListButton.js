@@ -43,7 +43,7 @@ const ListItem = styled.button`
   font-size: 0.875rem;
   font-family: ${theme.fonts};
   font-weight: ${({ checked }) => (checked ? 'bold' : 'normal')};
-  color: ${({ checked }) => (checked ? theme.headerText : theme.secondaryText)};
+  color: ${theme.secondaryText};
   text-align: left;
   box-sizing: border-box;
 
