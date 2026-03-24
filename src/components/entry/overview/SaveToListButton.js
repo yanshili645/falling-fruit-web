@@ -39,6 +39,7 @@ const ListItem = styled.button`
   padding: 10px 14px;
   background: ${({ checked }) => (checked ? theme.transparentOrange : 'none')};
   border: none;
+  border-bottom: 1px solid ${theme.secondaryBackground};
   cursor: pointer;
   font-size: 0.875rem;
   font-family: ${theme.fonts};
