@@ -1,5 +1,8 @@
-import { Bookmark, Plus } from '@styled-icons/boxicons-regular'
-import { Bookmark as BookmarkSolid } from '@styled-icons/boxicons-solid'
+import { Plus } from '@styled-icons/boxicons-regular'
+import {
+  Bookmark,
+  Bookmark as BookmarkSolid,
+} from '@styled-icons/boxicons-solid'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
@@ -50,11 +53,6 @@ const ListItem = styled.button`
 
   &:hover {
     background: ${({ checked }) => !checked && theme.transparentBlue};
-  }
-
-  svg {
-    flex-shrink: 0;
-    color: ${({ checked }) => (checked ? theme.orange : theme.tertiaryText)};
   }
 `
 
@@ -126,7 +124,6 @@ const SaveToListButton = ({ locationId }) => {
                 checked={checked}
                 onClick={() => handleToggle(listName)}
               >
-                {checked ? <BookmarkSolid size={16} /> : <Bookmark size={16} />}
                 {listName}
               </ListItem>
             )
