@@ -80,17 +80,16 @@ const AddNewItem = styled(ListItem)`
  */
 const ButtonLabelWrapper = styled.span`
   display: inline-grid;
-
-  & > span {
-    grid-area: 1 / 1;
-  }
+  justify-items: center;
 `
 
 const ButtonLabel = styled.span`
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  grid-area: 1 / 1;
 `
 
 const SaveToListButton = ({
