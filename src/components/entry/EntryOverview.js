@@ -68,6 +68,19 @@ const DisabledIconBesideText = styled(IconBesideText)`
     `}
 `
 
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const ButtonGroupStart = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 const EntryOverview = () => {
   const typesAccess = useSelector((state) => state.type.typesAccess)
   const history = useAppHistory()
@@ -246,11 +259,13 @@ const EntryOverview = () => {
             </p>
           </IconBesideText>
           <ReviewSummary reviews={reviews} />
-          <div>
-            <ReviewButton />
-            <ReportButton />
+          <ButtonRow>
+            <ButtonGroupStart>
+              <ReviewButton />
+              <ReportButton />
+            </ButtonGroupStart>
             <SaveToListButton locationId={locationId} />
-          </div>
+          </ButtonRow>
         </Description>
       </>
     </div>
