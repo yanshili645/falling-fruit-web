@@ -73,9 +73,10 @@ const AddNewItem = styled(ListItem)`
 `
 
 /**
- * Stacks both label strings on top of each other so the button always
+ * Stacks both label rows on top of each other so the button always
  * reserves space for whichever is wider, regardless of translation.
- * The inactive label is hidden with visibility:hidden (still takes up space).
+ * Each row contains the icon + text together so the icon stays snug
+ * next to the label text in both states.
  */
 const ButtonLabelWrapper = styled.span`
   display: inline-grid;
@@ -87,6 +88,9 @@ const ButtonLabelWrapper = styled.span`
 
 const ButtonLabel = styled.span`
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 `
 
 const SaveToListButton = ({
@@ -128,14 +132,16 @@ const SaveToListButton = ({
 
   return (
     <Wrapper ref={wrapperRef}>
-      <Button
-        leftIcon={isSavedToAny ? <BookmarkSolid /> : <Bookmark />}
-        secondary
-        onClick={() => setOpen((o) => !o)}
-      >
+      <Button secondary onClick={() => setOpen((o) => !o)}>
         <ButtonLabelWrapper>
-          <ButtonLabel visible={!isSavedToAny}>{saveLabel}</ButtonLabel>
-          <ButtonLabel visible={isSavedToAny}>{savedLabel}</ButtonLabel>
+          <ButtonLabel visible={!isSavedToAny}>
+            <Bookmark size={18} />
+            {saveLabel}
+          </ButtonLabel>
+          <ButtonLabel visible={isSavedToAny}>
+            <BookmarkSolid size={18} />
+            {savedLabel}
+          </ButtonLabel>
         </ButtonLabelWrapper>
       </Button>
       {open && (
