@@ -53,10 +53,6 @@ const Description = styled.section`
   & > p:first-child {
     margin-block-end: 14px;
   }
-
-  button {
-    margin-inline-end: 10px;
-  }
 `
 
 const DisabledIconBesideText = styled(IconBesideText)`
@@ -79,6 +75,7 @@ const ButtonGroupStart = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 10px;
 `
 
 const EntryOverview = () => {
