@@ -48,7 +48,7 @@ const ListItem = styled.button`
   box-sizing: border-box;
 
   &:hover {
-    background: ${theme.transparentBlue};
+    background: ${({ checked }) => !checked && theme.transparentBlue};
   }
 
   svg {
