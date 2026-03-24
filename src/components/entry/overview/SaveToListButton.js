@@ -8,6 +8,7 @@ import {
   toggleLocationInList,
 } from '../../../utils/locationLists'
 import Button from '../../ui/Button'
+import { theme } from '../../ui/GlobalStyle'
 
 const LISTS = ['Favourites', 'Want to visit', 'Grafted in 2025']
 
@@ -21,12 +22,13 @@ const Dropdown = styled.div`
   top: calc(100% + 4px);
   right: 0;
   z-index: 100;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: ${theme.background};
+  border: 1px solid ${theme.secondaryBackground};
+  border-radius: 0.375em;
+  box-shadow: 0 4px 12px ${theme.shadow};
   min-width: 200px;
   overflow: hidden;
+  font-family: ${theme.fonts};
 `
 
 const ListItem = styled.button`
@@ -38,29 +40,37 @@ const ListItem = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.9rem;
-  color: #333;
+  font-size: 0.875rem;
+  font-family: ${theme.fonts};
+  font-weight: ${({ checked }) => (checked ? 'bold' : 'normal')};
+  color: ${({ checked }) => (checked ? theme.headerText : theme.secondaryText)};
   text-align: left;
+  box-sizing: border-box;
 
   &:hover {
-    background: #f5f5f5;
+    background: ${theme.navBackground};
   }
 
   svg {
     flex-shrink: 0;
-    color: ${({ checked }) => (checked ? '#4caf50' : '#aaa')};
+    color: ${({ checked }) => (checked ? theme.orange : theme.tertiaryText)};
   }
 `
 
 const Divider = styled.hr`
   margin: 0;
   border: none;
-  border-top: 1px solid #eee;
+  border-top: 1px solid ${theme.secondaryBackground};
 `
 
 const AddNewItem = styled(ListItem)`
-  color: #555;
+  color: ${theme.text};
   font-style: italic;
+  font-weight: normal;
+
+  svg {
+    color: ${theme.tertiaryText};
+  }
 `
 
 const SaveToListButton = ({ locationId }) => {
