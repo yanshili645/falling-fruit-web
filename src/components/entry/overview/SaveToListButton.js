@@ -37,12 +37,13 @@ const ListItem = styled.button`
   gap: 10px;
   width: 100%;
   padding: 10px 14px;
-  background: none;
+  background: ${({ checked }) =>
+    checked ? theme.secondaryBackground : 'none'};
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
   font-family: ${theme.fonts};
-  font-weight: ${({ checked }) => (checked ? 'bold' : 'normal')};
+  font-weight: normal;
   color: ${theme.secondaryText};
   text-align: left;
   box-sizing: border-box;
