@@ -1,4 +1,3 @@
-import { Plus } from '@styled-icons/boxicons-regular'
 import {
   Bookmark,
   Bookmark as BookmarkSolid,
@@ -63,13 +62,9 @@ const Divider = styled.hr`
 `
 
 const AddNewItem = styled(ListItem)`
-  color: ${theme.text};
-  font-style: italic;
-  font-weight: normal;
-
-  svg {
-    color: ${theme.tertiaryText};
-  }
+  text-align: center;
+  color: ${theme.headerText};
+  font-weight: bold;
 `
 
 /**
@@ -158,10 +153,7 @@ const SaveToListButton = ({
             )
           })}
           <Divider />
-          <AddNewItem onClick={handleAddNew}>
-            <Plus size={16} />
-            Add new list…
-          </AddNewItem>
+          <AddNewItem onClick={handleAddNew}>Add new list</AddNewItem>
         </Dropdown>
       )}
     </Wrapper>
