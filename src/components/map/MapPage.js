@@ -1,5 +1,5 @@
 import GoogleMapReact from 'google-map-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { LabelVisibility, MapType, OverlayType } from '../../constants/settings'
 import { fetchFilterCounts } from '../../redux/filterSlice'
 import { setFromSettings, updatePosition } from '../../redux/locationSlice'
 import { disconnectMap, setGoogle } from '../../redux/mapSlice'
+import { selectAllLists } from '../../redux/saveSlice'
 import { fetchLocations } from '../../redux/viewChange'
 import { updateLastMapView } from '../../redux/viewportSlice'
 import { viewToString } from '../../utils/appUrl'
@@ -230,6 +231,16 @@ const MapPage = ({ isDesktop }) => {
   const { mapType, overlay, labelVisibility, showBusinesses } = useSelector(
     (state) => state.settings,
   )
+
+  // Build a Set of all saved location IDs from all lists
+  const allLists = useSelector(selectAllLists)
+  const savedLocationIds = useMemo(() => {
+    const ids = new Set()
+    allLists.forEach((list) => {
+      list.locationIds.forEach((id) => ids.add(id))
+    })
+    return ids
+  }, [allLists])
 
   // Needs to be available straight after clicking on a location, but also when zoomed out
   const selectedLocation =
@@ -550,6 +561,7 @@ const MapPage = ({ isDesktop }) => {
             getGoogleMaps={getGoogleMaps}
             onLocationClick={handleLocationClick}
             showLabels={showLabels}
+            savedLocationIds={savedLocationIds}
           />
           {(isEditingLocation || isAddingLocation) && draggedPosition && (
             <DraggableMapPin
