@@ -62,7 +62,7 @@ const Divider = styled.hr`
 `
 
 const AddNewItem = styled(ListItem)`
-  text-align: center;
+  justify-content: center;
   color: ${theme.headerText};
   font-weight: bold;
 `
