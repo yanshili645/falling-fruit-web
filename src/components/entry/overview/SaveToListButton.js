@@ -3,16 +3,16 @@ import {
   Bookmark as BookmarkSolid,
 } from '@styled-icons/boxicons-solid'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import {
-  getListsForLocation,
+  selectAllListNames,
+  selectListsForLocation,
   toggleLocationInList,
-} from '../../../utils/locationLists'
+} from '../../../redux/saveSlice'
 import Button from '../../ui/Button'
 import { theme } from '../../ui/GlobalStyle'
-
-const LISTS = ['Favourites', 'Want to visit', 'Grafted in 2025']
 
 const Wrapper = styled.div`
   position: relative;
@@ -92,13 +92,12 @@ const SaveToListButton = ({
   saveLabel = 'Save',
   savedLabel = 'Saved',
 }) => {
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
-  const [savedLists, setSavedLists] = useState([])
   const wrapperRef = useRef(null)
 
-  useEffect(() => {
-    setSavedLists(getListsForLocation(locationId))
-  }, [locationId])
+  const savedLists = useSelector(selectListsForLocation(locationId))
+  const allListNames = useSelector(selectAllListNames)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -114,8 +113,7 @@ const SaveToListButton = ({
   }, [open])
 
   const handleToggle = (listName) => {
-    const updated = toggleLocationInList(locationId, listName)
-    setSavedLists(updated)
+    dispatch(toggleLocationInList({ listName, locationId }))
   }
 
   const handleAddNew = () => {
@@ -140,7 +138,7 @@ const SaveToListButton = ({
       </Button>
       {open && (
         <Dropdown>
-          {LISTS.map((listName) => {
+          {allListNames.map((listName) => {
             const checked = savedLists.includes(listName)
             return (
               <ListItem
