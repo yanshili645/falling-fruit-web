@@ -1,6 +1,3 @@
 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="8" cy="8" r="7" fill="rgb(65, 131, 196)" stroke="white" stroke-width="2"></circle>
-  <g transform="translate(8, 0) scale(0.4)">
-    <path d="M19 10.132v-6c0-1.103-.897-2-2-2H7c-1.103 0-2 .897-2 2V22l7-4.666L19 22V10.132z" fill="#ffa41b" />
-  </g>
+  <circle cx="8" cy="8" r="7" fill="#ffa41b" stroke="white" stroke-width="2"></circle>
 </svg>
