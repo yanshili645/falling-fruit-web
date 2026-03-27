@@ -10,12 +10,6 @@ export interface SavedList {
   locationIds: (string | number)[]
 }
 
-const DEFAULT_LISTS: SavedList[] = [
-  { name: 'Favourites', locationIds: [] },
-  { name: 'Want to visit', locationIds: [] },
-  { name: 'Grafted in 2025', locationIds: [] },
-]
-
 // Small simulated network delay in ms
 const SIMULATED_DELAY = 100
 
@@ -32,7 +26,7 @@ function loadLists(): SavedList[] {
   } catch {
     // If parsing fails, fall through to defaults
   }
-  return DEFAULT_LISTS
+  return []
 }
 
 function saveLists(lists: SavedList[]): void {
