@@ -1,3 +1,4 @@
+import { Check, X } from '@styled-icons/boxicons-regular'
 import {
   Bookmark,
   Bookmark as BookmarkSolid,
@@ -6,9 +7,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import { toggleLocationInList } from '../../../redux/saveSlice'
+import { addList, toggleLocationInList } from '../../../redux/saveSlice'
 import Button from '../../ui/Button'
 import { theme } from '../../ui/GlobalStyle'
+import Input from '../../ui/Input'
 
 const Wrapper = styled.div`
   position: relative;
@@ -63,6 +65,41 @@ const AddNewItem = styled(ListItem)`
   font-weight: bold;
 `
 
+const AddNewRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+`
+
+const AddNewInput = styled(Input)`
+  flex: 1;
+  height: 34px;
+  font-size: 0.875rem;
+`
+
+const IconActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: ${({ color }) => color || theme.secondaryText};
+
+  &:hover {
+    background: ${theme.secondaryBackground};
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`
+
 /**
  * Stacks both label rows on top of each other so the button always
  * reserves space for whichever is wider, regardless of translation.
@@ -90,7 +127,10 @@ const SaveToListButton = ({
 }) => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
+  const [addingNew, setAddingNew] = useState(false)
+  const [newListName, setNewListName] = useState('')
   const wrapperRef = useRef(null)
+  const newListInputRef = useRef(null)
 
   const lists = useSelector((state) => state.save.lists)
   const allListNames = lists.map((l) => l.name)
@@ -103,6 +143,8 @@ const SaveToListButton = ({
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
         setOpen(false)
+        setAddingNew(false)
+        setNewListName('')
       }
     }
     if (open) {
@@ -111,12 +153,34 @@ const SaveToListButton = ({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [open])
 
+  // Focus the input when the add-new row appears
+  useEffect(() => {
+    if (addingNew && newListInputRef.current) {
+      newListInputRef.current.focus()
+    }
+  }, [addingNew])
+
   const handleToggle = (listName) => {
     dispatch(toggleLocationInList({ listName, locationId }))
   }
 
-  const handleAddNew = () => {
-    alert('Add new list — coming soon!')
+  const handleAddNewClick = () => {
+    setAddingNew(true)
+    setNewListName('')
+  }
+
+  const handleConfirmNewList = () => {
+    const trimmed = newListName.trim()
+    if (trimmed) {
+      dispatch(addList({ name: trimmed }))
+    }
+    setAddingNew(false)
+    setNewListName('')
+  }
+
+  const handleCancelNewList = () => {
+    setAddingNew(false)
+    setNewListName('')
   }
 
   const isSavedToAny = savedLists.length > 0
@@ -150,7 +214,33 @@ const SaveToListButton = ({
             )
           })}
           <Divider />
-          <AddNewItem onClick={handleAddNew}>Add new list</AddNewItem>
+          {addingNew ? (
+            <AddNewRow>
+              <AddNewInput
+                ref={newListInputRef}
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                placeholder="List name"
+                onEnter={handleConfirmNewList}
+              />
+              <IconActionButton
+                onClick={handleConfirmNewList}
+                color={theme.green}
+                title="Confirm"
+              >
+                <Check />
+              </IconActionButton>
+              <IconActionButton
+                onClick={handleCancelNewList}
+                color={theme.red}
+                title="Cancel"
+              >
+                <X />
+              </IconActionButton>
+            </AddNewRow>
+          ) : (
+            <AddNewItem onClick={handleAddNewClick}>+ Add new list</AddNewItem>
+          )}
         </Dropdown>
       )}
     </Wrapper>
