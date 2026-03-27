@@ -5,7 +5,7 @@
 
 const STORAGE_KEY = 'save_lists'
 
-interface SavedList {
+export interface SavedList {
   name: string
   locationIds: (string | number)[]
 }
