@@ -10,7 +10,6 @@ import { LabelVisibility, MapType, OverlayType } from '../../constants/settings'
 import { fetchFilterCounts } from '../../redux/filterSlice'
 import { setFromSettings, updatePosition } from '../../redux/locationSlice'
 import { disconnectMap, setGoogle } from '../../redux/mapSlice'
-import { selectAllLists } from '../../redux/saveSlice'
 import { fetchLocations } from '../../redux/viewChange'
 import { updateLastMapView } from '../../redux/viewportSlice'
 import { viewToString } from '../../utils/appUrl'
@@ -233,7 +232,7 @@ const MapPage = ({ isDesktop }) => {
   )
 
   // Build a Set of all saved location IDs from all lists
-  const allLists = useSelector(selectAllLists)
+  const allLists = useSelector((state) => state.save.lists)
   const savedLocationIds = useMemo(() => {
     const ids = new Set()
     allLists.forEach((list) => {

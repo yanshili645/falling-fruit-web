@@ -6,11 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import {
-  selectAllListNames,
-  selectListsForLocation,
-  toggleLocationInList,
-} from '../../../redux/saveSlice'
+import { toggleLocationInList } from '../../../redux/saveSlice'
 import Button from '../../ui/Button'
 import { theme } from '../../ui/GlobalStyle'
 
@@ -96,8 +92,11 @@ const SaveToListButton = ({
   const [open, setOpen] = useState(false)
   const wrapperRef = useRef(null)
 
-  const savedLists = useSelector(selectListsForLocation(locationId))
-  const allListNames = useSelector(selectAllListNames)
+  const lists = useSelector((state) => state.save.lists)
+  const allListNames = lists.map((l) => l.name)
+  const savedLists = lists
+    .filter((l) => l.locationIds.includes(locationId))
+    .map((l) => l.name)
 
   // Close dropdown when clicking outside
   useEffect(() => {

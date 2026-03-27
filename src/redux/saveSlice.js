@@ -56,7 +56,9 @@ export const saveSlice = createSlice({
     toggleLocationInList: (state, action) => {
       const { listName, locationId } = action.payload
       const list = state.lists.find((l) => l.name === listName)
-      if (!list) {return}
+      if (!list) {
+        return
+      }
       const index = list.locationIds.indexOf(locationId)
       if (index === -1) {
         list.locationIds.push(locationId)
@@ -112,27 +114,5 @@ export const {
   removeLocationFromList,
   removeLocationFromAllLists,
 } = saveSlice.actions
-
-// --- Selectors ---
-
-/** Returns all lists. */
-export const selectAllLists = (state) => state.save.lists
-
-/** Returns all list names. */
-export const selectAllListNames = (state) => state.save.lists.map((l) => l.name)
-
-/** Returns the locationIds for a given list name. */
-export const selectLocationsInList = (listName) => (state) =>
-  state.save.lists.find((l) => l.name === listName)?.locationIds ?? []
-
-/** Returns the names of all lists that contain the given locationId. */
-export const selectListsForLocation = (locationId) => (state) =>
-  state.save.lists
-    .filter((l) => l.locationIds.includes(locationId))
-    .map((l) => l.name)
-
-/** Returns true if the given locationId is in at least one list. */
-export const selectIsLocationSaved = (locationId) => (state) =>
-  state.save.lists.some((l) => l.locationIds.includes(locationId))
 
 export default saveSlice.reducer
