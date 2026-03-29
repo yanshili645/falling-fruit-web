@@ -4,7 +4,7 @@ import SavedLocationsPage from './SavedLocationsPage'
 
 const pages = [
   {
-    path: ['/saved/:listId'],
+    path: ['/lists/:listId'],
     component: SavedLocationsPage,
   },
 ]
