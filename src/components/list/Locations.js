@@ -3,6 +3,7 @@ import Skeleton from 'react-loading-skeleton'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
+import useSavedLocationIds from '../saved/useSavedLocationIds'
 import CircleIcon from '../ui/CircleIcon'
 import { theme } from '../ui/GlobalStyle'
 import DistanceText from './DistanceText'
@@ -113,8 +114,7 @@ const Locations = ({
   const { typesAccess } = useSelector((state) => state.type)
   const { types: selectedTypes } = useSelector((state) => state.filter)
 
-  const allLists = useSelector((state) => state.save.lists)
-  const savedLocationIds = new Set(allLists.flatMap((list) => list.locationIds))
+  const savedLocationIds = useSavedLocationIds()
 
   const observerTarget = useRef(null)
 

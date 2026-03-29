@@ -1,5 +1,5 @@
 import GoogleMapReact from 'google-map-react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -16,6 +16,7 @@ import { viewToString } from '../../utils/appUrl'
 import throttle from '../../utils/throttle'
 import { useAppHistory } from '../../utils/useAppHistory'
 import { useIsEmbed } from '../../utils/useBreakpoint'
+import useSavedLocationIds from '../saved/useSavedLocationIds'
 import Share from '../share/Share'
 import ShareIconButton from '../share/ShareIconButton'
 import { AddLocationMobile } from '../ui/AddLocation'
@@ -231,15 +232,7 @@ const MapPage = ({ isDesktop }) => {
     (state) => state.settings,
   )
 
-  // Build a Set of all saved location IDs from all lists
-  const allLists = useSelector((state) => state.save.lists)
-  const savedLocationIds = useMemo(() => {
-    const ids = new Set()
-    allLists.forEach((list) => {
-      list.locationIds.forEach((id) => ids.add(id))
-    })
-    return ids
-  }, [allLists])
+  const savedLocationIds = useSavedLocationIds()
 
   // Needs to be available straight after clicking on a location, but also when zoomed out
   const selectedLocation =
