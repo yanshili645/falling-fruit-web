@@ -4,13 +4,14 @@ import {
   Bookmark as BookmarkSolid,
 } from '@styled-icons/boxicons-solid'
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import { addList, toggleLocationInList } from '../../../redux/saveSlice'
 import Button from '../../ui/Button'
 import { theme } from '../../ui/GlobalStyle'
 import Input from '../../ui/Input'
+import useSavedLists from './useSavedLists'
 
 const Wrapper = styled.div`
   position: relative;
@@ -132,11 +133,7 @@ const SaveToListButton = ({
   const wrapperRef = useRef(null)
   const newListInputRef = useRef(null)
 
-  const lists = useSelector((state) => state.save.lists)
-  const allListNames = lists.map((l) => l.name)
-  const savedLists = lists
-    .filter((l) => l.locationIds.includes(locationId))
-    .map((l) => l.name)
+  const { lists, isSavedToAny } = useSavedLists(locationId)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -183,8 +180,6 @@ const SaveToListButton = ({
     setNewListName('')
   }
 
-  const isSavedToAny = savedLists.length > 0
-
   return (
     <Wrapper ref={wrapperRef}>
       <Button secondary onClick={() => setOpen((o) => !o)}>
@@ -201,18 +196,15 @@ const SaveToListButton = ({
       </Button>
       {open && (
         <Dropdown>
-          {allListNames.map((listName) => {
-            const checked = savedLists.includes(listName)
-            return (
-              <ListItem
-                key={listName}
-                checked={checked}
-                onClick={() => handleToggle(listName)}
-              >
-                {listName}
-              </ListItem>
-            )
-          })}
+          {lists.map(({ name, checked }) => (
+            <ListItem
+              key={name}
+              checked={checked}
+              onClick={() => handleToggle(name)}
+            >
+              {name}
+            </ListItem>
+          ))}
           <Divider />
           {addingNew ? (
             <AddNewRow>
