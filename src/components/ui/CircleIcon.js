@@ -14,7 +14,7 @@ const CircleIcon = styled.div`
   overflow: hidden;
   outline: ${({ isSaved, theme }) =>
     isSaved ? `3px solid ${theme.orange}` : 'none'};
-  outline-offset: 2px;
+  outline-offset: -1px;
 
   ${StyledIconBase} {
     width: 65%;
