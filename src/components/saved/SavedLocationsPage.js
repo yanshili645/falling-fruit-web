@@ -39,18 +39,23 @@ const SavedLocationsPage = () => {
     <Page>
       <h1>Saved locations: {currentList.name}</h1>
 
-      {otherLists.length > 0 && (
-        <nav>
-          <h3>Other lists</h3>
-          <ul>
-            {otherLists.map((list) => (
-              <li key={list.listId}>
-                <Link to={`/saved/${list.listId}`}>{list.name}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      <nav>
+        <h3>
+          <Link to="/lists">All lists</Link>
+        </h3>
+        {otherLists.length > 0 && (
+          <>
+            <h3>Other lists</h3>
+            <ul>
+              {otherLists.map((list) => (
+                <li key={list.listId}>
+                  <Link to={`/lists/${list.listId}`}>{list.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </nav>
 
       <h3>Locations</h3>
       {currentList.locationIds.length === 0 ? (
