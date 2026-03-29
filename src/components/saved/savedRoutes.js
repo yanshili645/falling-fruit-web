@@ -2,10 +2,15 @@ import { Route } from 'react-router-dom'
 
 import SavedLocationsPage from './SavedLocationsPage'
 
-const SavedRoutes = () => (
-  <>
-    <Route path="/saved/:listId" element={<SavedLocationsPage />} />
-  </>
-)
+const pages = [
+  {
+    path: ['/saved/:listId'],
+    component: SavedLocationsPage,
+  },
+]
 
-export default SavedRoutes
+const savedRoutes = [
+  ...pages.map((props) => <Route key={props.path[0]} {...props} />),
+]
+
+export default savedRoutes
