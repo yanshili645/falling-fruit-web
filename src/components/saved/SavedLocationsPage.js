@@ -18,7 +18,6 @@ const SavedLocationsPage = () => {
   }, [dispatch])
 
   const currentList = lists.find((l) => l.listId === parsedListId)
-  const otherLists = lists.filter((l) => l.listId !== parsedListId)
 
   if (isLoading) {
     return (
@@ -42,28 +41,14 @@ const SavedLocationsPage = () => {
       <BackButton backPath="/lists" />
       <h1>Saved locations: {currentList.name}</h1>
 
-      <nav>
-        {otherLists.length > 0 && (
-          <>
-            <h3>Other lists</h3>
-            <ul>
-              {otherLists.map((list) => (
-                <li key={list.listId}>
-                  <Link to={`/lists/${list.listId}`}>{list.name}</Link>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </nav>
-
-      <h3>Locations</h3>
       {currentList.locationIds.length === 0 ? (
         <p>No locations saved in this list.</p>
       ) : (
         <ul>
           {currentList.locationIds.map((id) => (
-            <li key={id}>{id}</li>
+            <li key={id}>
+              <Link to={`/locations/${id}`}>{id}</Link>
+            </li>
           ))}
         </ul>
       )}
