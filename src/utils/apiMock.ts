@@ -6,6 +6,7 @@
 const STORAGE_KEY = 'save_lists'
 
 export interface SavedList {
+  listId: number
   name: string
   locationIds: (string | number)[]
 }
@@ -33,6 +34,10 @@ function saveLists(lists: SavedList[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(lists))
 }
 
+function generateListId(): number {
+  return Math.floor(Math.random() * 2_147_483_647)
+}
+
 /**
  * Fetch all lists.
  */
@@ -51,35 +56,35 @@ export async function addList(name: string): Promise<SavedList[]> {
   const lists = loadLists()
   const exists = lists.some((list) => list.name === name)
   if (!exists) {
-    lists.push({ name, locationIds: [] })
+    lists.push({ listId: generateListId(), name, locationIds: [] })
     saveLists(lists)
   }
   return lists
 }
 
 /**
- * Remove a list by name.
+ * Remove a list by id.
  * Returns the updated lists.
  */
-export async function removeList(name: string): Promise<SavedList[]> {
+export async function removeList(listId: number): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
-  const lists = loadLists().filter((list) => list.name !== name)
+  const lists = loadLists().filter((list) => list.listId !== listId)
   saveLists(lists)
   return lists
 }
 
 /**
  * Rename an existing list.
- * No-op if oldName doesn't exist or newName is already taken.
+ * No-op if listId doesn't exist or newName is already taken.
  * Returns the updated lists.
  */
 export async function renameList(
-  oldName: string,
+  listId: number,
   newName: string,
 ): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
   const lists = loadLists()
-  const target = lists.find((list) => list.name === oldName)
+  const target = lists.find((list) => list.listId === listId)
   const nameConflict = lists.some((list) => list.name === newName)
   if (target && !nameConflict) {
     target.name = newName
@@ -89,17 +94,17 @@ export async function renameList(
 }
 
 /**
- * Toggle a location in/out of a named list.
+ * Toggle a location in/out of a list identified by listId.
  * Adds the locationId if absent; removes it if present.
  * Returns the updated lists.
  */
 export async function toggleLocationInList(
-  listName: string,
+  listId: number,
   locationId: string | number,
 ): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
   const lists = loadLists()
-  const list = lists.find((l) => l.name === listName)
+  const list = lists.find((l) => l.listId === listId)
   if (list) {
     const index = list.locationIds.indexOf(locationId)
     if (index === -1) {
@@ -113,17 +118,17 @@ export async function toggleLocationInList(
 }
 
 /**
- * Add a location to a named list.
+ * Add a location to a list identified by listId.
  * No-op if already present.
  * Returns the updated lists.
  */
 export async function addLocationToList(
-  listName: string,
+  listId: number,
   locationId: string | number,
 ): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
   const lists = loadLists()
-  const list = lists.find((l) => l.name === listName)
+  const list = lists.find((l) => l.listId === listId)
   if (list && !list.locationIds.includes(locationId)) {
     list.locationIds.push(locationId)
     saveLists(lists)
@@ -132,16 +137,16 @@ export async function addLocationToList(
 }
 
 /**
- * Remove a location from a named list.
+ * Remove a location from a list identified by listId.
  * Returns the updated lists.
  */
 export async function removeLocationFromList(
-  listName: string,
+  listId: number,
   locationId: string | number,
 ): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
   const lists = loadLists()
-  const list = lists.find((l) => l.name === listName)
+  const list = lists.find((l) => l.listId === listId)
   if (list) {
     list.locationIds = list.locationIds.filter((id) => id !== locationId)
     saveLists(lists)

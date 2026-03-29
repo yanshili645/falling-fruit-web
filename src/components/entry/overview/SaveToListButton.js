@@ -157,8 +157,8 @@ const SaveToListButton = ({
     }
   }, [addingNew])
 
-  const handleToggle = (listName) => {
-    dispatch(toggleLocationInList({ listName, locationId }))
+  const handleToggle = (listId) => {
+    dispatch(toggleLocationInList({ listId, locationId }))
   }
 
   const handleAddNewClick = () => {
@@ -196,11 +196,11 @@ const SaveToListButton = ({
       </Button>
       {open && (
         <Dropdown>
-          {lists.map(({ name, checked }) => (
+          {lists.map(({ listId, name, checked }) => (
             <ListItem
-              key={name}
+              key={listId}
               checked={checked}
-              onClick={() => handleToggle(name)}
+              onClick={() => handleToggle(listId)}
             >
               {name}
             </ListItem>

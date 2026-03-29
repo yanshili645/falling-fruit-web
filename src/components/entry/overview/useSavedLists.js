@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
  *
  * @param {string|number} locationId
  * @returns {{
- *   lists: Array<{ name: string, checked: boolean }>,
+ *   lists: Array<{ listId: number, name: string, checked: boolean }>,
  *   isSavedToAny: boolean,
  * }}
  */
@@ -16,6 +16,7 @@ const useSavedLists = (locationId) => {
   const lists = useMemo(
     () =>
       allLists.map((list) => ({
+        listId: list.listId,
         name: list.name,
         checked: list.locationIds.includes(locationId),
       })),

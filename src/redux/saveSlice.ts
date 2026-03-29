@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { addList as apiAddList,
+import {
+  addList as apiAddList,
   addLocationToList as apiAddLocationToList,
   getLists,
   removeList as apiRemoveList,
   removeLocationFromAllLists as apiRemoveLocationFromAllLists,
   removeLocationFromList as apiRemoveLocationFromList,
   renameList as apiRenameList,
-SavedList ,
+  SavedList,
   toggleLocationInList as apiToggleLocationInList,
 } from '../utils/apiMock'
 
@@ -15,8 +16,8 @@ export interface SaveState {
   lists: SavedList[]
   /** Global loading flag for operations not tied to a specific list */
   isLoading: boolean
-  /** Per-list loading state: { [listName]: boolean } */
-  loadingLists: Record<string, boolean>
+  /** Per-list loading state: { [listId]: boolean } */
+  loadingLists: Record<number, boolean>
 }
 
 const initialState: SaveState = {
@@ -44,53 +45,53 @@ export const addList = createAsyncThunk<SavedList[], { name: string }>(
   },
 )
 
-// Remove a list by name
-// Payload: { name: string }
-export const removeList = createAsyncThunk<SavedList[], { name: string }>(
+// Remove a list by id
+// Payload: { listId: number }
+export const removeList = createAsyncThunk<SavedList[], { listId: number }>(
   'save/removeList',
-  async ({ name }) => {
-    const lists = await apiRemoveList(name)
+  async ({ listId }) => {
+    const lists = await apiRemoveList(listId)
     return lists
   },
 )
 
 // Rename an existing list
-// Payload: { oldName: string, newName: string }
+// Payload: { listId: number, newName: string }
 export const renameList = createAsyncThunk<
   SavedList[],
-  { oldName: string; newName: string }
->('save/renameList', async ({ oldName, newName }) => {
-  const lists = await apiRenameList(oldName, newName)
+  { listId: number; newName: string }
+>('save/renameList', async ({ listId, newName }) => {
+  const lists = await apiRenameList(listId, newName)
   return lists
 })
 
-// Toggle a location in/out of a named list
-// Payload: { listName: string, locationId: string | number }
+// Toggle a location in/out of a list
+// Payload: { listId: number, locationId: string | number }
 export const toggleLocationInList = createAsyncThunk<
   SavedList[],
-  { listName: string; locationId: string | number }
->('save/toggleLocationInList', async ({ listName, locationId }) => {
-  const lists = await apiToggleLocationInList(listName, locationId)
+  { listId: number; locationId: string | number }
+>('save/toggleLocationInList', async ({ listId, locationId }) => {
+  const lists = await apiToggleLocationInList(listId, locationId)
   return lists
 })
 
-// Add a location to a named list
-// Payload: { listName: string, locationId: string | number }
+// Add a location to a list
+// Payload: { listId: number, locationId: string | number }
 export const addLocationToList = createAsyncThunk<
   SavedList[],
-  { listName: string; locationId: string | number }
->('save/addLocationToList', async ({ listName, locationId }) => {
-  const lists = await apiAddLocationToList(listName, locationId)
+  { listId: number; locationId: string | number }
+>('save/addLocationToList', async ({ listId, locationId }) => {
+  const lists = await apiAddLocationToList(listId, locationId)
   return lists
 })
 
-// Remove a location from a named list
-// Payload: { listName: string, locationId: string | number }
+// Remove a location from a list
+// Payload: { listId: number, locationId: string | number }
 export const removeLocationFromList = createAsyncThunk<
   SavedList[],
-  { listName: string; locationId: string | number }
->('save/removeLocationFromList', async ({ listName, locationId }) => {
-  const lists = await apiRemoveLocationFromList(listName, locationId)
+  { listId: number; locationId: string | number }
+>('save/removeLocationFromList', async ({ listId, locationId }) => {
+  const lists = await apiRemoveLocationFromList(listId, locationId)
   return lists
 })
 
@@ -122,93 +123,90 @@ const saveSlice = createSlice({
     })
 
     // addList
-    builder.addCase(addList.pending, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = true
+    builder.addCase(addList.pending, (state) => {
+      state.isLoading = true
     })
     builder.addCase(addList.fulfilled, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = false
+      state.isLoading = false
       state.lists = action.payload
     })
-    builder.addCase(addList.rejected, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = false
+    builder.addCase(addList.rejected, (state) => {
+      state.isLoading = false
     })
 
     // removeList
     builder.addCase(removeList.pending, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = true
+      const { listId } = action.meta.arg
+      state.loadingLists[listId] = true
     })
     builder.addCase(removeList.fulfilled, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
       state.lists = action.payload
     })
     builder.addCase(removeList.rejected, (state, action) => {
-      const { name } = action.meta.arg
-      state.loadingLists[name] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
     })
 
     // renameList
     builder.addCase(renameList.pending, (state, action) => {
-      const { oldName } = action.meta.arg
-      state.loadingLists[oldName] = true
+      const { listId } = action.meta.arg
+      state.loadingLists[listId] = true
     })
     builder.addCase(renameList.fulfilled, (state, action) => {
-      const { oldName } = action.meta.arg
-      state.loadingLists[oldName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
       state.lists = action.payload
     })
     builder.addCase(renameList.rejected, (state, action) => {
-      const { oldName } = action.meta.arg
-      state.loadingLists[oldName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
     })
 
     // toggleLocationInList
     builder.addCase(toggleLocationInList.pending, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = true
+      const { listId } = action.meta.arg
+      state.loadingLists[listId] = true
     })
     builder.addCase(toggleLocationInList.fulfilled, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
       state.lists = action.payload
     })
     builder.addCase(toggleLocationInList.rejected, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
     })
 
     // addLocationToList
     builder.addCase(addLocationToList.pending, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = true
+      const { listId } = action.meta.arg
+      state.loadingLists[listId] = true
     })
     builder.addCase(addLocationToList.fulfilled, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
       state.lists = action.payload
     })
     builder.addCase(addLocationToList.rejected, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
     })
 
     // removeLocationFromList
     builder.addCase(removeLocationFromList.pending, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = true
+      const { listId } = action.meta.arg
+      state.loadingLists[listId] = true
     })
     builder.addCase(removeLocationFromList.fulfilled, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
       state.lists = action.payload
     })
     builder.addCase(removeLocationFromList.rejected, (state, action) => {
-      const { listName } = action.meta.arg
-      state.loadingLists[listName] = false
+      const { listId } = action.meta.arg
+      delete state.loadingLists[listId]
     })
 
     // removeLocationFromAllLists
