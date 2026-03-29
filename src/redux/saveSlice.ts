@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import {
-  addList as apiAddList,
+import { addList as apiAddList,
   addLocationToList as apiAddLocationToList,
   getLists,
   removeList as apiRemoveList,
   removeLocationFromAllLists as apiRemoveLocationFromAllLists,
   removeLocationFromList as apiRemoveLocationFromList,
   renameList as apiRenameList,
-  SavedList,
+SavedList ,
   toggleLocationInList as apiToggleLocationInList,
 } from '../utils/apiMock'
 
@@ -109,120 +108,120 @@ const saveSlice = createSlice({
   name: 'save',
   initialState,
   reducers: {},
-  extraReducers: {
+  extraReducers: (builder) => {
     // fetchLists
-    [fetchLists.pending]: (state) => {
+    builder.addCase(fetchLists.pending, (state) => {
       state.isLoading = true
-    },
-    [fetchLists.fulfilled]: (state, action) => {
+    })
+    builder.addCase(fetchLists.fulfilled, (state, action) => {
       state.isLoading = false
       state.lists = action.payload
-    },
-    [fetchLists.rejected]: (state) => {
+    })
+    builder.addCase(fetchLists.rejected, (state) => {
       state.isLoading = false
-    },
+    })
 
     // addList
-    [addList.pending]: (state, action) => {
+    builder.addCase(addList.pending, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = true
-    },
-    [addList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(addList.fulfilled, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = false
       state.lists = action.payload
-    },
-    [addList.rejected]: (state, action) => {
+    })
+    builder.addCase(addList.rejected, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = false
-    },
+    })
 
     // removeList
-    [removeList.pending]: (state, action) => {
+    builder.addCase(removeList.pending, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = true
-    },
-    [removeList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(removeList.fulfilled, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = false
       state.lists = action.payload
-    },
-    [removeList.rejected]: (state, action) => {
+    })
+    builder.addCase(removeList.rejected, (state, action) => {
       const { name } = action.meta.arg
       state.loadingLists[name] = false
-    },
+    })
 
     // renameList
-    [renameList.pending]: (state, action) => {
+    builder.addCase(renameList.pending, (state, action) => {
       const { oldName } = action.meta.arg
       state.loadingLists[oldName] = true
-    },
-    [renameList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(renameList.fulfilled, (state, action) => {
       const { oldName } = action.meta.arg
       state.loadingLists[oldName] = false
       state.lists = action.payload
-    },
-    [renameList.rejected]: (state, action) => {
+    })
+    builder.addCase(renameList.rejected, (state, action) => {
       const { oldName } = action.meta.arg
       state.loadingLists[oldName] = false
-    },
+    })
 
     // toggleLocationInList
-    [toggleLocationInList.pending]: (state, action) => {
+    builder.addCase(toggleLocationInList.pending, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = true
-    },
-    [toggleLocationInList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(toggleLocationInList.fulfilled, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
       state.lists = action.payload
-    },
-    [toggleLocationInList.rejected]: (state, action) => {
+    })
+    builder.addCase(toggleLocationInList.rejected, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
-    },
+    })
 
     // addLocationToList
-    [addLocationToList.pending]: (state, action) => {
+    builder.addCase(addLocationToList.pending, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = true
-    },
-    [addLocationToList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(addLocationToList.fulfilled, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
       state.lists = action.payload
-    },
-    [addLocationToList.rejected]: (state, action) => {
+    })
+    builder.addCase(addLocationToList.rejected, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
-    },
+    })
 
     // removeLocationFromList
-    [removeLocationFromList.pending]: (state, action) => {
+    builder.addCase(removeLocationFromList.pending, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = true
-    },
-    [removeLocationFromList.fulfilled]: (state, action) => {
+    })
+    builder.addCase(removeLocationFromList.fulfilled, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
       state.lists = action.payload
-    },
-    [removeLocationFromList.rejected]: (state, action) => {
+    })
+    builder.addCase(removeLocationFromList.rejected, (state, action) => {
       const { listName } = action.meta.arg
       state.loadingLists[listName] = false
-    },
+    })
 
     // removeLocationFromAllLists
-    [removeLocationFromAllLists.pending]: (state) => {
+    builder.addCase(removeLocationFromAllLists.pending, (state) => {
       state.isLoading = true
-    },
-    [removeLocationFromAllLists.fulfilled]: (state, action) => {
+    })
+    builder.addCase(removeLocationFromAllLists.fulfilled, (state, action) => {
       state.isLoading = false
       state.lists = action.payload
-    },
-    [removeLocationFromAllLists.rejected]: (state) => {
+    })
+    builder.addCase(removeLocationFromAllLists.rejected, (state) => {
       state.isLoading = false
-    },
+    })
   },
 })
 
