@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 
 import { fetchLists } from '../../redux/saveSlice'
+import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
 const SavedLocationsPage = () => {
@@ -30,6 +31,7 @@ const SavedLocationsPage = () => {
   if (!currentList) {
     return (
       <Page>
+        <BackButton backPath="/lists" />
         <p>List not found.</p>
       </Page>
     )
@@ -37,12 +39,10 @@ const SavedLocationsPage = () => {
 
   return (
     <Page>
+      <BackButton backPath="/lists" />
       <h1>Saved locations: {currentList.name}</h1>
 
       <nav>
-        <h3>
-          <Link to="/lists">All lists</Link>
-        </h3>
         {otherLists.length > 0 && (
           <>
             <h3>Other lists</h3>

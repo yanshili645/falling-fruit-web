@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchLists } from '../../redux/saveSlice'
+import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
 const SavedListsPage = () => {
@@ -23,6 +24,7 @@ const SavedListsPage = () => {
 
   return (
     <Page>
+      <BackButton backPath="/account/edit" />
       <h1>Saved locations</h1>
 
       {lists.length === 0 ? (
