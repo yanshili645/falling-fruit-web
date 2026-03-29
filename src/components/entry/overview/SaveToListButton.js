@@ -216,22 +216,22 @@ const SaveToListButton = ({
                 onEnter={handleConfirmNewList}
               />
               <IconActionButton
-                onClick={handleConfirmNewList}
-                color={theme.green}
-                title="Confirm"
-              >
-                <Check />
-              </IconActionButton>
-              <IconActionButton
                 onClick={handleCancelNewList}
                 color={theme.red}
                 title="Cancel"
               >
                 <X />
               </IconActionButton>
+              <IconActionButton
+                onClick={handleConfirmNewList}
+                color={theme.green}
+                title="Confirm"
+              >
+                <Check />
+              </IconActionButton>
             </AddNewRow>
           ) : (
-            <AddNewItem onClick={handleAddNewClick}>+ Add new list</AddNewItem>
+            <AddNewItem onClick={handleAddNewClick}>Add new list</AddNewItem>
           )}
         </Dropdown>
       )}
