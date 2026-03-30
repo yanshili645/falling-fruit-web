@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { getLocationsByIds } from '../utils/api'
 import {
   addList as apiAddList,
   addLocationToList as apiAddLocationToList,
@@ -18,12 +19,18 @@ export interface SaveState {
   isLoading: boolean
   /** Per-list loading state: { [listId]: boolean } */
   loadingLists: Record<number, boolean>
+  /** Locations fetched for the currently viewed list */
+  currentListLocations: any[]
+  /** Loading flag for fetching locations of the current list */
+  isLoadingLocations: boolean
 }
 
 const initialState: SaveState = {
   lists: [],
   isLoading: false,
   loadingLists: {},
+  currentListLocations: [],
+  isLoadingLocations: false,
 }
 
 // Fetch all lists from the backend
@@ -103,6 +110,17 @@ export const removeLocationFromAllLists = createAsyncThunk<
 >('save/removeLocationFromAllLists', async ({ locationId }) => {
   const lists = await apiRemoveLocationFromAllLists(locationId)
   return lists
+})
+
+// Fetch full location data for all locationIds in a given list.
+// Inefficient: fires one HTTP request per location ID.
+// Payload: { locationIds: (string | number)[] }
+export const fetchLocationsForList = createAsyncThunk<
+  any[],
+  { locationIds: (string | number)[] }
+>('save/fetchLocationsForList', async ({ locationIds }) => {
+  const locations = await getLocationsByIds(locationIds)
+  return locations
 })
 
 const saveSlice = createSlice({
@@ -219,6 +237,19 @@ const saveSlice = createSlice({
     })
     builder.addCase(removeLocationFromAllLists.rejected, (state) => {
       state.isLoading = false
+    })
+
+    // fetchLocationsForList
+    builder.addCase(fetchLocationsForList.pending, (state) => {
+      state.isLoadingLocations = true
+      state.currentListLocations = []
+    })
+    builder.addCase(fetchLocationsForList.fulfilled, (state, action) => {
+      state.isLoadingLocations = false
+      state.currentListLocations = action.payload
+    })
+    builder.addCase(fetchLocationsForList.rejected, (state) => {
+      state.isLoadingLocations = false
     })
   },
 })
