@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link,useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { fetchLists, fetchLocationsForList } from '../../redux/saveSlice'
+import { TypesAccess } from '../../utils/localizedTypes'
 import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
@@ -39,13 +40,17 @@ const Address = styled.span`
   margin-left: 0.5rem;
 `
 
-const LocationTypesList = ({ location }) => {
+const LocationTypesList = ({ location, typesAccess }) => {
   const typeElements = (location.type_ids || []).map((typeId, idx) => {
-    if (typeId.commonName) {
-      return <CommonName key={idx}>{typeId.commonName}</CommonName>
+    const type = typesAccess.getType(typeId)
+    if (!type) {
+      return <span key={idx}>{typeId}</span>
     }
-    if (typeId.scientificName) {
-      return <ScientificName key={idx}>{typeId.scientificName}</ScientificName>
+    if (type.commonName) {
+      return <CommonName key={idx}>{type.commonName}</CommonName>
+    }
+    if (type.scientificName) {
+      return <ScientificName key={idx}>{type.scientificName}</ScientificName>
     }
     return <span key={idx}>{typeId}</span>
   })
@@ -71,6 +76,8 @@ const SavedLocationsPage = () => {
 
   const { lists, isLoading, currentListLocations, isLoadingLocations } =
     useSelector((state) => state.save)
+
+  const typesAccess = useSelector((state) => new TypesAccess(state.type.types))
 
   useEffect(() => {
     dispatch(fetchLists())
@@ -114,7 +121,10 @@ const SavedLocationsPage = () => {
         <LocationList>
           {(currentListLocations || []).map((location) => (
             <LocationItem key={location.id}>
-              <LocationTypesList location={location} />
+              <LocationTypesList
+                location={location}
+                typesAccess={typesAccess}
+              />
               {location.address && <Address>{location.address}</Address>}
             </LocationItem>
           ))}
