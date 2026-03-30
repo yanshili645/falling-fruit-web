@@ -130,7 +130,7 @@ export const getLocationById = (
  * Inefficient bulk fetch: fires one request per location ID and waits for all.
  * Returns an array of location objects in the same order as the input IDs.
  */
-export const getLocationsByIds = (ids: (string | number)[]) =>
+export const getLocationsByIds = (ids: number[]) =>
   Promise.all(ids.map((id) => getLocationById(id, undefined)))
 
 export const editLocation = (

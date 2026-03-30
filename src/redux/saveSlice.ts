@@ -117,7 +117,7 @@ export const removeLocationFromAllLists = createAsyncThunk<
 // Payload: { locationIds: (string | number)[] }
 export const fetchLocationsForList = createAsyncThunk<
   any[],
-  { locationIds: (string | number)[] }
+  { locationIds: number[] }
 >('save/fetchLocationsForList', async ({ locationIds }) => {
   const locations = await getLocationsByIds(locationIds)
   return locations
