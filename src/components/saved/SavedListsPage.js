@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { fetchLists } from '../../redux/saveSlice'
+import { formatISOString } from '../entry/textFormatters'
 import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
 const SavedListsPage = () => {
   const dispatch = useDispatch()
   const { lists, isLoading } = useSelector((state) => state.save)
+  const language = navigator.language
 
   useEffect(() => {
     dispatch(fetchLists())
@@ -36,6 +38,12 @@ const SavedListsPage = () => {
               <Link to={`/lists/${list.listId}`}>{list.name}</Link> (
               {list.locationIds.length}{' '}
               {list.locationIds.length === 1 ? 'location' : 'locations'})
+              <br />
+              <small>
+                Created: {formatISOString(list.createdAt, language)}
+                {' · '}
+                Last updated: {formatISOString(list.updatedAt, language)}
+              </small>
             </li>
           ))}
         </ul>

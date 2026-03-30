@@ -9,6 +9,8 @@ export interface SavedList {
   listId: number
   name: string
   locationIds: (string | number)[]
+  createdAt: string
+  updatedAt: string
 }
 
 // Small simulated network delay in ms
@@ -56,7 +58,14 @@ export async function addList(name: string): Promise<SavedList[]> {
   const lists = loadLists()
   const exists = lists.some((list) => list.name === name)
   if (!exists) {
-    lists.push({ listId: generateListId(), name, locationIds: [] })
+    const now = new Date().toISOString()
+    lists.push({
+      listId: generateListId(),
+      name,
+      locationIds: [],
+      createdAt: now,
+      updatedAt: now,
+    })
     saveLists(lists)
   }
   return lists
@@ -88,6 +97,7 @@ export async function renameList(
   const nameConflict = lists.some((list) => list.name === newName)
   if (target && !nameConflict) {
     target.name = newName
+    target.updatedAt = new Date().toISOString()
     saveLists(lists)
   }
   return lists
@@ -112,6 +122,7 @@ export async function toggleLocationInList(
     } else {
       list.locationIds.splice(index, 1)
     }
+    list.updatedAt = new Date().toISOString()
     saveLists(lists)
   }
   return lists
@@ -131,6 +142,7 @@ export async function addLocationToList(
   const list = lists.find((l) => l.listId === listId)
   if (list && !list.locationIds.includes(locationId)) {
     list.locationIds.push(locationId)
+    list.updatedAt = new Date().toISOString()
     saveLists(lists)
   }
   return lists
@@ -149,6 +161,7 @@ export async function removeLocationFromList(
   const list = lists.find((l) => l.listId === listId)
   if (list) {
     list.locationIds = list.locationIds.filter((id) => id !== locationId)
+    list.updatedAt = new Date().toISOString()
     saveLists(lists)
   }
   return lists
@@ -163,8 +176,10 @@ export async function removeLocationFromAllLists(
 ): Promise<SavedList[]> {
   await delay(SIMULATED_DELAY)
   const lists = loadLists()
+  const now = new Date().toISOString()
   lists.forEach((list) => {
     list.locationIds = list.locationIds.filter((id) => id !== locationId)
+    list.updatedAt = now
   })
   saveLists(lists)
   return lists
