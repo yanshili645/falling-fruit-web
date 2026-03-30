@@ -4,7 +4,6 @@ import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { fetchLists, fetchLocationsForList } from '../../redux/saveSlice'
-import { TypesAccess } from '../../utils/localizedTypes'
 import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
@@ -77,7 +76,7 @@ const SavedLocationsPage = () => {
   const { lists, isLoading, currentListLocations, isLoadingLocations } =
     useSelector((state) => state.save)
 
-  const typesAccess = useSelector((state) => new TypesAccess(state.type.types))
+  const { typesAccess } = useSelector((state) => state.type)
 
   useEffect(() => {
     dispatch(fetchLists())
