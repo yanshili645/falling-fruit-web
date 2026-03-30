@@ -33,7 +33,9 @@ const SavedListsPage = () => {
         <ul>
           {lists.map((list) => (
             <li key={list.listId}>
-              <Link to={`/lists/${list.listId}`}>{list.name}</Link>
+              <Link to={`/lists/${list.listId}`}>{list.name}</Link> (
+              {list.locationIds.length}{' '}
+              {list.locationIds.length === 1 ? 'location' : 'locations'})
             </li>
           ))}
         </ul>
