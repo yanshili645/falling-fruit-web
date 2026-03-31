@@ -40,9 +40,7 @@ const SavedListsPage = () => {
               {list.locationIds.length === 1 ? 'location' : 'locations'})
               <br />
               <small>
-                {list.updatedAt
-                  ? `Last updated: ${formatISOString(list.updatedAt, language)}`
-                  : `Created: ${formatISOString(list.createdAt, language)}`}
+                {`Last updated: ${formatISOString(list.updatedAt ?? list.createdAt, language)}`}
               </small>
             </li>
           ))}
