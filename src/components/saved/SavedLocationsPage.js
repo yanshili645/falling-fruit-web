@@ -155,15 +155,12 @@ const SavedLocationsPage = () => {
               </LocationInfo>
               <Button
                 secondary
+                leftIcon={<i className="bx bx-minus" />}
                 onClick={() => handleRemove(location.id)}
                 disabled={isListBusy}
                 aria-label={`Remove location ${location.id} from list`}
-                style={{ padding: '0 6px', minWidth: 0 }}
               >
-                <i
-                  className="bx bx-x"
-                  style={{ fontSize: '1.2em', lineHeight: 1 }}
-                />
+                Remove
               </Button>
             </LocationItem>
           ))}
