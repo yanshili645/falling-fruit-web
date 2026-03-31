@@ -1,4 +1,5 @@
 import { X as XIcon } from '@styled-icons/boxicons-regular'
+import { darken } from 'polished'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
@@ -61,12 +62,13 @@ const RemoveButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({ theme }) => theme.red};
   opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+  transition: color 0.15s ease;
 
   &:hover {
-    color: darkred;
+    color: ${({ theme }) => darken(0.2, theme.red)};
   }
 `
 
