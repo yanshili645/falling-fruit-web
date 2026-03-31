@@ -129,11 +129,7 @@ const SavedLocationsPage = () => {
   }, [dispatch, currentList])
 
   const handleRemove = (locationId) => {
-    if (
-      window.confirm(
-        'Are you sure you want to remove this location from the list?',
-      )
-    ) {
+    if (window.confirm('Remove this location from the list?')) {
       dispatch(removeLocationFromList({ listId: parsedListId, locationId }))
     }
   }
