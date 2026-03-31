@@ -129,7 +129,13 @@ const SavedLocationsPage = () => {
   }, [dispatch, currentList])
 
   const handleRemove = (locationId) => {
-    dispatch(removeLocationFromList({ listId: parsedListId, locationId }))
+    if (
+      window.confirm(
+        'Are you sure you want to remove this location from the list?',
+      )
+    ) {
+      dispatch(removeLocationFromList({ listId: parsedListId, locationId }))
+    }
   }
 
   const isListBusy = !!loadingLists[parsedListId]
