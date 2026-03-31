@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { fetchLists, fetchLocationsForList } from '../../redux/saveSlice'
+import {
+  fetchLists,
+  fetchLocationsForList,
+  removeLocationFromList,
+} from '../../redux/saveSlice'
 import { BackButton } from '../ui/ActionButtons'
 import { Page } from '../ui/PageTemplate'
 
@@ -14,8 +18,18 @@ const LocationList = styled.ul`
 `
 
 const LocationItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: 1px solid ${({ theme }) => theme.secondaryBackground};
+`
+
+const LocationInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
 `
 
 const LocationLink = styled(Link)`
@@ -38,6 +52,53 @@ const Address = styled.span`
   color: ${({ theme }) => theme.secondaryText};
   margin-left: 0.5rem;
 `
+
+const RemoveButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: 1px solid ${({ theme }) => theme.secondaryText};
+  border-radius: 4px;
+  color: ${({ theme }) => theme.secondaryText};
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  margin-left: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.red ?? '#c0392b'};
+    color: ${({ theme }) => theme.red ?? '#c0392b'};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`
+
+const TrashIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="12"
+    height="12"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+    <path d="M10 11v6" />
+    <path d="M14 11v6" />
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+  </svg>
+)
 
 const LocationTypesList = ({ location, typesAccess }) => {
   const typeElements = (location.type_ids || []).map((typeId, idx) => {
@@ -73,8 +134,13 @@ const SavedLocationsPage = () => {
   const { listId } = useParams()
   const parsedListId = parseInt(listId, 10)
 
-  const { lists, isLoading, currentListLocations, isLoadingLocations } =
-    useSelector((state) => state.save)
+  const {
+    lists,
+    isLoading,
+    currentListLocations,
+    isLoadingLocations,
+    loadingLists,
+  } = useSelector((state) => state.save)
 
   const { typesAccess } = useSelector((state) => state.type)
 
@@ -89,6 +155,12 @@ const SavedLocationsPage = () => {
       dispatch(fetchLocationsForList({ locationIds: currentList.locationIds }))
     }
   }, [dispatch, currentList])
+
+  const handleRemove = (locationId) => {
+    dispatch(removeLocationFromList({ listId: parsedListId, locationId }))
+  }
+
+  const isListBusy = !!loadingLists[parsedListId]
 
   if (isLoading) {
     return (
@@ -120,11 +192,21 @@ const SavedLocationsPage = () => {
         <LocationList>
           {(currentListLocations || []).map((location) => (
             <LocationItem key={location.id}>
-              <LocationTypesList
-                location={location}
-                typesAccess={typesAccess}
-              />
-              {location.address && <Address>{location.address}</Address>}
+              <LocationInfo>
+                <LocationTypesList
+                  location={location}
+                  typesAccess={typesAccess}
+                />
+                {location.address && <Address>{location.address}</Address>}
+              </LocationInfo>
+              <RemoveButton
+                onClick={() => handleRemove(location.id)}
+                disabled={isListBusy}
+                aria-label={`Remove location ${location.id} from list`}
+              >
+                <TrashIcon />
+                Remove
+              </RemoveButton>
             </LocationItem>
           ))}
         </LocationList>
