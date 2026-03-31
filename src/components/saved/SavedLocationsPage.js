@@ -1,3 +1,4 @@
+import { X as XIcon } from '@styled-icons/boxicons-regular'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
@@ -9,7 +10,6 @@ import {
   removeLocationFromList,
 } from '../../redux/saveSlice'
 import { BackButton } from '../ui/ActionButtons'
-import Button from '../ui/Button'
 import { Page } from '../ui/PageTemplate'
 
 const LocationList = styled.ul`
@@ -52,6 +52,22 @@ const CommonName = styled.span`
 const Address = styled.span`
   color: ${({ theme }) => theme.secondaryText};
   margin-left: 0.5rem;
+`
+
+const RemoveButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: red;
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+
+  &:hover {
+    color: darkred;
+  }
 `
 
 const LocationTypesList = ({ location, typesAccess }) => {
@@ -153,14 +169,13 @@ const SavedLocationsPage = () => {
                 />
                 {location.address && <Address>{location.address}</Address>}
               </LocationInfo>
-              <Button
-                secondary
+              <RemoveButton
                 onClick={() => handleRemove(location.id)}
                 disabled={isListBusy}
                 aria-label={`Remove location ${location.id} from list`}
               >
-                Remove
-              </Button>
+                <XIcon size={24} />
+              </RemoveButton>
             </LocationItem>
           ))}
         </LocationList>
