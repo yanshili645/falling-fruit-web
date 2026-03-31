@@ -61,7 +61,7 @@ const RemoveButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: red;
+  color: ${({ theme }) => theme.secondaryText};
   opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
