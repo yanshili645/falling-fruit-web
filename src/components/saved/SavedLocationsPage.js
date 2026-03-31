@@ -72,6 +72,15 @@ const RemoveButton = styled.button`
   }
 `
 
+const getLocationDisplayName = (location, typesAccess) => {
+  const names = (location.type_ids || []).map((typeId) => {
+    const type = typesAccess.getType(typeId)
+    if (!type) {return typeId}
+    return type.commonName || type.scientificName || typeId
+  })
+  return names.length > 0 ? names.join(', ') : location.id
+}
+
 const LocationTypesList = ({ location, typesAccess }) => {
   const typeElements = (location.type_ids || []).map((typeId, idx) => {
     const type = typesAccess.getType(typeId)
@@ -128,9 +137,15 @@ const SavedLocationsPage = () => {
     }
   }, [dispatch, currentList])
 
-  const handleRemove = (locationId) => {
-    if (window.confirm('Remove this location from the list?')) {
-      dispatch(removeLocationFromList({ listId: parsedListId, locationId }))
+  const handleRemove = (location) => {
+    const displayName = getLocationDisplayName(location, typesAccess)
+    if (window.confirm(`Remove ${displayName} from the list?`)) {
+      dispatch(
+        removeLocationFromList({
+          listId: parsedListId,
+          locationId: location.id,
+        }),
+      )
     }
   }
 
@@ -174,9 +189,9 @@ const SavedLocationsPage = () => {
                 {location.address && <Address>{location.address}</Address>}
               </LocationInfo>
               <RemoveButton
-                onClick={() => handleRemove(location.id)}
+                onClick={() => handleRemove(location)}
                 disabled={isListBusy}
-                aria-label={`Remove location ${location.id} from list`}
+                aria-label={`Remove ${getLocationDisplayName(location, typesAccess)} from list`}
               >
                 <XIcon size={24} />
               </RemoveButton>
