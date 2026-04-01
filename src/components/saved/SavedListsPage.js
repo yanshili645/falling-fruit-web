@@ -32,13 +32,12 @@ const ListCard = styled.div`
   background-color: #fff;
 `
 
-const ListHeader = styled.div`
+const TitleRow = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 1rem 1.25rem;
-  cursor: pointer;
-  user-select: none;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid ${theme.secondaryBackground};
 `
 
 const ListName = styled.h2`
@@ -47,10 +46,22 @@ const ListName = styled.h2`
   flex: 1;
 `
 
+const ExpandRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: ${theme.secondaryBackground};
+  }
+`
+
 const LocationCount = styled.span`
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: ${theme.secondaryText};
-  flex-shrink: 0;
 `
 
 const IconButton = styled.button`
@@ -198,7 +209,9 @@ const EmptyText = styled.p`
 const getLocationDisplayName = (location, typesAccess) => {
   const names = (location.type_ids || []).map((typeId) => {
     const type = typesAccess.getType(typeId)
-    if (!type) {return typeId}
+    if (!type) {
+      return typeId
+    }
     return type.commonName || type.scientificName || typeId
   })
   return names.length > 0 ? names.join(', ') : String(location.id)
@@ -215,7 +228,9 @@ const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
 
   // Close menu when clicking outside
   useEffect(() => {
-    if (!menuOpen) {return}
+    if (!menuOpen) {
+      return
+    }
     const handleClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false)
@@ -227,7 +242,6 @@ const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
 
   const handleViewOnMap = () => {
     setMenuOpen(false)
-    // Navigate to the location on the map
     window.location.hash = `/locations/${location.id}`
   }
 
@@ -288,7 +302,6 @@ const ListCardComponent = ({ list }) => {
   }, [editing])
 
   const handleToggleExpand = () => {
-    if (editing) {return}
     const next = !expanded
     setExpanded(next)
     if (next && list.locationIds.length > 0) {
@@ -326,8 +339,9 @@ const ListCardComponent = ({ list }) => {
 
   return (
     <ListCard>
+      {/* Row 1: title + edit/delete icons (or edit input) */}
       {editing ? (
-        <EditRow onClick={(e) => e.stopPropagation()}>
+        <EditRow>
           <EditInput
             ref={inputRef}
             value={editName}
@@ -350,22 +364,27 @@ const ListCardComponent = ({ list }) => {
           </IconButton>
         </EditRow>
       ) : (
-        <ListHeader onClick={handleToggleExpand}>
-          {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+        <TitleRow>
           <ListName>{list.name}</ListName>
-          <LocationCount>
-            {list.locationIds.length}{' '}
-            {list.locationIds.length === 1 ? 'location' : 'locations'}
-          </LocationCount>
           <IconButton onClick={handleEditClick} title="Rename list">
             <Pencil />
           </IconButton>
           <IconButton onClick={handleDeleteClick} title="Delete list">
             <Trash />
           </IconButton>
-        </ListHeader>
+        </TitleRow>
       )}
 
+      {/* Row 2: chevron + "x locations" expand toggle */}
+      <ExpandRow onClick={handleToggleExpand}>
+        {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+        <LocationCount>
+          {list.locationIds.length}{' '}
+          {list.locationIds.length === 1 ? 'location' : 'locations'}
+        </LocationCount>
+      </ExpandRow>
+
+      {/* Expanded location list */}
       {expanded && (
         <>
           {isLoadingLocations ? (
