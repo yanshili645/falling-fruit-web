@@ -204,9 +204,50 @@ const EmptyText = styled.p`
   margin: 0;
 `
 
+const ScientificName = styled.span`
+  font-style: italic;
+`
+
+const CommonName = styled.span`
+  font-weight: bold;
+`
+
 /* ─── Helpers ───────────────────────────────────────────────────── */
 
-const getLocationDisplayName = (location, typesAccess) => {
+const LocationTypeDisplay = ({ location, typesAccess }) => {
+  const typeIds = location.type_ids || []
+
+  if (typeIds.length === 0) {
+    return <span>{String(location.id)}</span>
+  }
+
+  const typeElements = typeIds.map((typeId, idx) => {
+    const type = typesAccess.getType(typeId)
+    if (!type) {
+      return <span key={idx}>{typeId}</span>
+    }
+    if (type.commonName) {
+      return <CommonName key={idx}>{type.commonName}</CommonName>
+    }
+    if (type.scientificName) {
+      return <ScientificName key={idx}>{type.scientificName}</ScientificName>
+    }
+    return <span key={idx}>{typeId}</span>
+  })
+
+  return (
+    <>
+      {typeElements.reduce((prev, curr, idx) => {
+        if (prev.length) {
+          return [...prev, <span key={`sep-${idx}`}>, </span>, curr]
+        }
+        return [curr]
+      }, [])}
+    </>
+  )
+}
+
+const getLocationPlainName = (location, typesAccess) => {
   const names = (location.type_ids || []).map((typeId) => {
     const type = typesAccess.getType(typeId)
     if (!type) {
@@ -224,7 +265,7 @@ const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
 
-  const displayName = getLocationDisplayName(location, typesAccess)
+  const displayName = getLocationPlainName(location, typesAccess)
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -255,7 +296,7 @@ const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
   return (
     <LocationItem>
       <LocationButton onClick={() => setMenuOpen((v) => !v)}>
-        {displayName}
+        <LocationTypeDisplay location={location} typesAccess={typesAccess} />
         {location.address && <Address>{location.address}</Address>}
       </LocationButton>
 
