@@ -17,6 +17,7 @@ const LocationList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
+  border-top: 1px solid ${({ theme }) => theme.secondaryBackground};
 `
 
 const LocationItem = styled.li`
@@ -75,7 +76,9 @@ const RemoveButton = styled.button`
 const getLocationDisplayName = (location, typesAccess) => {
   const names = (location.type_ids || []).map((typeId) => {
     const type = typesAccess.getType(typeId)
-    if (!type) {return typeId}
+    if (!type) {
+      return typeId
+    }
     return type.commonName || type.scientificName || typeId
   })
   return names.length > 0 ? names.join(', ') : location.id
