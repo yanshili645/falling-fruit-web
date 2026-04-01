@@ -27,9 +27,7 @@ import { Page } from '../ui/PageTemplate'
 
 const ListCard = styled.div`
   border: 1px solid #ddd;
-  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   background-color: #fff;
 `
 
