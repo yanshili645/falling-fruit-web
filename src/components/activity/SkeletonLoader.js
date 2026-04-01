@@ -23,27 +23,4 @@ const SkeletonLoader = ({ count = 3 }) => (
   </SkeletonWrapper>
 )
 
-export const LocationRowSkeleton = () => (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0.5rem 1.25rem',
-      borderBottom: '1px solid #eee',
-    }}
-  >
-    <div
-      style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}
-    >
-      {/* Type name */}
-      <Skeleton width={120} height={16} />
-      {/* Address */}
-      <Skeleton width={180} height={14} />
-    </div>
-    {/* Remove button placeholder */}
-    <Skeleton circle width={20} height={20} />
-  </div>
-)
-
 export default SkeletonLoader

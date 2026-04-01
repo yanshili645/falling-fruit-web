@@ -7,6 +7,7 @@ import {
 import { Pencil, Trash } from '@styled-icons/boxicons-solid'
 import { darken } from 'polished'
 import { useEffect, useRef, useState } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
@@ -18,12 +19,33 @@ import {
   removeLocationFromList,
   renameList,
 } from '../../redux/saveSlice'
-import { LocationRowSkeleton } from '../activity/SkeletonLoader'
 import { BackButton } from '../ui/ActionButtons'
 import { theme } from '../ui/GlobalStyle'
 import Input from '../ui/Input'
 import { Page } from '../ui/PageTemplate'
 
+const LocationRowSkeleton = () => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0.5rem 1.25rem',
+      borderBottom: '1px solid #eee',
+    }}
+  >
+    <div
+      style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1 }}
+    >
+      {/* Type name */}
+      <Skeleton width={120} height={16} />
+      {/* Address */}
+      <Skeleton width={180} height={14} />
+    </div>
+    {/* Remove button placeholder */}
+    <Skeleton circle width={20} height={20} />
+  </div>
+)
 /* ─── Styled components ─────────────────────────────────────────── */
 
 const ListCard = styled.div`
