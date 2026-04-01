@@ -220,6 +220,7 @@ const AddListCardWrapper = styled(ListCard)`
 const AddListPromptRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 0.75rem 1.25rem;
   color: ${theme.headerText};
