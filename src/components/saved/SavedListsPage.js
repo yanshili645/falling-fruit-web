@@ -61,37 +61,10 @@ const EditInput = styled(Input)`
   font-weight: bold;
 `
 
-const ConfirmDeleteRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-  color: ${theme.secondaryText};
-`
-
-const ConfirmButton = styled.button`
-  background: none;
-  border: 1px solid
-    ${({ danger }) => (danger ? theme.red : theme.secondaryText)};
-  border-radius: 4px;
-  padding: 2px 10px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: ${({ danger }) => (danger ? theme.red : theme.secondaryText)};
-
-  &:hover {
-    background: ${({ danger }) =>
-      danger ? theme.red : theme.secondaryBackground};
-    color: ${({ danger }) => (danger ? '#fff' : theme.headerText)};
-  }
-`
-
 const ListCard = ({ list, language }) => {
   const dispatch = useDispatch()
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState(list.name)
-  const [confirmingDelete, setConfirmingDelete] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -102,7 +75,6 @@ const ListCard = ({ list, language }) => {
 
   const handleEditClick = () => {
     setEditName(list.name)
-    setConfirmingDelete(false)
     setEditing(true)
   }
 
@@ -120,16 +92,9 @@ const ListCard = ({ list, language }) => {
   }
 
   const handleDeleteClick = () => {
-    setEditing(false)
-    setConfirmingDelete(true)
-  }
-
-  const handleCancelDelete = () => {
-    setConfirmingDelete(false)
-  }
-
-  const handleConfirmDelete = () => {
-    dispatch(removeList({ listId: list.listId }))
+    if (window.confirm(`Delete "${list.name}"?`)) {
+      dispatch(removeList({ listId: list.listId }))
+    }
   }
 
   return (
@@ -165,14 +130,6 @@ const ListCard = ({ list, language }) => {
             <Check />
           </IconButton>
         </EditRow>
-      ) : confirmingDelete ? (
-        <ConfirmDeleteRow>
-          <span>Delete &ldquo;{list.name}&rdquo;?</span>
-          <ConfirmButton danger onClick={handleConfirmDelete}>
-            Delete
-          </ConfirmButton>
-          <ConfirmButton onClick={handleCancelDelete}>Cancel</ConfirmButton>
-        </ConfirmDeleteRow>
       ) : (
         <ListHeader>
           <ListName>{list.name}</ListName>
