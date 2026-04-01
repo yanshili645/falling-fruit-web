@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { fetchLists, removeList, renameList } from '../../redux/saveSlice'
-import { formatISOString } from '../entry/textFormatters'
 import { BackButton } from '../ui/ActionButtons'
 import { theme } from '../ui/GlobalStyle'
 import Input from '../ui/Input'
@@ -61,7 +60,7 @@ const EditInput = styled(Input)`
   font-weight: bold;
 `
 
-const ListCard = ({ list, language }) => {
+const ListCard = ({ list }) => {
   const dispatch = useDispatch()
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState(list.name)
@@ -150,15 +149,6 @@ const ListCard = ({ list, language }) => {
       ) : (
         <span>0 locations</span>
       )}
-      <p
-        style={{
-          margin: '0.5rem 0 0 0',
-          color: '#888',
-          fontSize: '0.85rem',
-        }}
-      >
-        {`Last updated: ${formatISOString(list.updatedAt ?? list.createdAt, language)}`}
-      </p>
     </div>
   )
 }
