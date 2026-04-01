@@ -18,6 +18,7 @@ import {
   removeLocationFromList,
   renameList,
 } from '../../redux/saveSlice'
+import { LocationRowSkeleton } from '../activity/SkeletonLoader'
 import { BackButton } from '../ui/ActionButtons'
 import { theme } from '../ui/GlobalStyle'
 import Input from '../ui/Input'
@@ -188,13 +189,6 @@ const MenuOption = styled.button`
   &:hover {
     background: ${theme.secondaryBackground};
   }
-`
-
-const LoadingText = styled.p`
-  padding: 0.5rem 1.25rem;
-  color: ${theme.secondaryText};
-  font-size: 0.9rem;
-  margin: 0;
 `
 
 const ScientificName = styled.span`
@@ -472,12 +466,12 @@ const ListCardComponent = ({ list }) => {
 
       {/* Expanded location list */}
       {expanded && (
-        <>
-          {isLoadingLocations ? (
-            <LoadingText>Loading locations…</LoadingText>
-          ) : (
-            <LocationList>
-              {currentListLocations.map((location) => (
+        <LocationList>
+          {isLoadingLocations
+            ? Array.from({ length: Math.min(list.locationIds.length, 3) }).map(
+                (_, i) => <LocationRowSkeleton key={i} />,
+              )
+            : currentListLocations.map((location) => (
                 <LocationRow
                   key={location.id}
                   location={location}
@@ -486,9 +480,7 @@ const ListCardComponent = ({ list }) => {
                   typesAccess={typesAccess}
                 />
               ))}
-            </LocationList>
-          )}
-        </>
+        </LocationList>
       )}
     </ListCard>
   )
