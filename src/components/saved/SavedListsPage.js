@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import {
+  addList,
   fetchLists,
   fetchLocationsForList,
   removeList,
@@ -209,6 +210,45 @@ const ScientificName = styled.span`
 `
 
 const CommonName = styled.span`
+  font-weight: bold;
+`
+
+const AddListCardWrapper = styled(ListCard)`
+  cursor: pointer;
+`
+
+const AddListPromptRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.25rem;
+  color: ${theme.headerText};
+  font-weight: bold;
+  font-size: 1rem;
+  user-select: none;
+
+  &:hover {
+    background: ${theme.secondaryBackground};
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+`
+
+const AddListInputRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.75rem 1.25rem;
+`
+
+const AddListInput = styled(Input)`
+  flex: 1;
+  height: 34px;
+  font-size: 1rem;
   font-weight: bold;
 `
 
@@ -458,6 +498,65 @@ const ListCardComponent = ({ list }) => {
   )
 }
 
+/* ─── AddListCard ───────────────────────────────────────────────── */
+
+const AddListCard = () => {
+  const dispatch = useDispatch()
+  const [adding, setAdding] = useState(false)
+  const [newListName, setNewListName] = useState('')
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (adding && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [adding])
+
+  const handleConfirm = () => {
+    const trimmed = newListName.trim()
+    if (trimmed) {
+      dispatch(addList({ name: trimmed }))
+    }
+    setAdding(false)
+    setNewListName('')
+  }
+
+  const handleCancel = () => {
+    setAdding(false)
+    setNewListName('')
+  }
+
+  return (
+    <AddListCardWrapper>
+      {adding ? (
+        <AddListInputRow>
+          <AddListInput
+            ref={inputRef}
+            value={newListName}
+            onChange={(e) => setNewListName(e.target.value)}
+            placeholder="List name"
+            onEnter={handleConfirm}
+          />
+          <IconButton onClick={handleCancel} color={theme.red} title="Cancel">
+            <X />
+          </IconButton>
+          <IconButton
+            onClick={handleConfirm}
+            color={theme.green}
+            title="Confirm"
+          >
+            <Check />
+          </IconButton>
+        </AddListInputRow>
+      ) : (
+        <AddListPromptRow onClick={() => setAdding(true)}>
+          Add new list
+        </AddListPromptRow>
+      )}
+    </AddListCardWrapper>
+  )
+}
+
 /* ─── SavedListsPage ────────────────────────────────────────────── */
 
 const SavedListsPage = () => {
@@ -481,15 +580,12 @@ const SavedListsPage = () => {
       <BackButton backPath="/account/edit" />
       <h1>Saved locations</h1>
 
-      {lists.length === 0 ? (
-        <p>No lists found.</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {lists.map((list) => (
-            <ListCardComponent key={list.listId} list={list} />
-          ))}
-        </div>
-      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {lists.map((list) => (
+          <ListCardComponent key={list.listId} list={list} />
+        ))}
+        <AddListCard />
+      </div>
     </Page>
   )
 }
