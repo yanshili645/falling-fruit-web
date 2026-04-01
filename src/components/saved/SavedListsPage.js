@@ -47,10 +47,14 @@ const SavedListsPage = () => {
               <h2 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>
                 {list.name}
               </h2>
-              <Link to={`/lists/${list.listId}`}>
-                {list.locationIds.length}{' '}
-                {list.locationIds.length === 1 ? 'location' : 'locations'}
-              </Link>
+              {list.locationIds.length > 0 ? (
+                <Link to={`/lists/${list.listId}`}>
+                  {list.locationIds.length}{' '}
+                  {list.locationIds.length === 1 ? 'location' : 'locations'}
+                </Link>
+              ) : (
+                <span>0 locations</span>
+              )}
               <p
                 style={{
                   margin: '0.5rem 0 0 0',
