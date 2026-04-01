@@ -136,11 +136,7 @@ const ListCard = ({ list, language }) => {
           <IconButton onClick={handleEditClick} title="Rename list">
             <Pencil />
           </IconButton>
-          <IconButton
-            onClick={handleDeleteClick}
-            color={theme.red}
-            title="Delete list"
-          >
+          <IconButton onClick={handleDeleteClick} title="Delete list">
             <Trash />
           </IconButton>
         </ListHeader>
