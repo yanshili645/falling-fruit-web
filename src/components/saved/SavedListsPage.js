@@ -149,7 +149,7 @@ const RemoveButton = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${theme.red};
+  color: ${theme.secondaryText};
   opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
   transition: color 0.15s ease;
@@ -157,7 +157,7 @@ const RemoveButton = styled.button`
   margin-left: 0.5rem;
 
   &:hover {
-    color: ${darken(0.2, theme.red)};
+    color: ${darken(0.4, theme.secondaryText)};
   }
 `
 
