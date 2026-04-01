@@ -3,10 +3,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getLocationsByIds } from '../utils/api'
 import {
   addList as apiAddList,
-  addLocationToList as apiAddLocationToList,
   getLists,
   removeList as apiRemoveList,
-  removeLocationFromAllLists as apiRemoveLocationFromAllLists,
   removeLocationFromList as apiRemoveLocationFromList,
   renameList as apiRenameList,
   SavedList,
@@ -82,16 +80,6 @@ export const toggleLocationInList = createAsyncThunk<
   return lists
 })
 
-// Add a location to a list
-// Payload: { listId: number, locationId: string | number }
-export const addLocationToList = createAsyncThunk<
-  SavedList[],
-  { listId: number; locationId: string | number }
->('save/addLocationToList', async ({ listId, locationId }) => {
-  const lists = await apiAddLocationToList(listId, locationId)
-  return lists
-})
-
 // Remove a location from a list
 // Payload: { listId: number, locationId: string | number }
 export const removeLocationFromList = createAsyncThunk<
@@ -99,16 +87,6 @@ export const removeLocationFromList = createAsyncThunk<
   { listId: number; locationId: string | number }
 >('save/removeLocationFromList', async ({ listId, locationId }) => {
   const lists = await apiRemoveLocationFromList(listId, locationId)
-  return lists
-})
-
-// Remove a location from every list
-// Payload: { locationId: string | number }
-export const removeLocationFromAllLists = createAsyncThunk<
-  SavedList[],
-  { locationId: string | number }
->('save/removeLocationFromAllLists', async ({ locationId }) => {
-  const lists = await apiRemoveLocationFromAllLists(locationId)
   return lists
 })
 
@@ -198,21 +176,6 @@ const saveSlice = createSlice({
       delete state.loadingLists[listId]
     })
 
-    // addLocationToList
-    builder.addCase(addLocationToList.pending, (state, action) => {
-      const { listId } = action.meta.arg
-      state.loadingLists[listId] = true
-    })
-    builder.addCase(addLocationToList.fulfilled, (state, action) => {
-      const { listId } = action.meta.arg
-      delete state.loadingLists[listId]
-      state.lists = action.payload
-    })
-    builder.addCase(addLocationToList.rejected, (state, action) => {
-      const { listId } = action.meta.arg
-      delete state.loadingLists[listId]
-    })
-
     // removeLocationFromList
     builder.addCase(removeLocationFromList.pending, (state, action) => {
       const { listId } = action.meta.arg
@@ -226,18 +189,6 @@ const saveSlice = createSlice({
     builder.addCase(removeLocationFromList.rejected, (state, action) => {
       const { listId } = action.meta.arg
       delete state.loadingLists[listId]
-    })
-
-    // removeLocationFromAllLists
-    builder.addCase(removeLocationFromAllLists.pending, (state) => {
-      state.isLoading = true
-    })
-    builder.addCase(removeLocationFromAllLists.fulfilled, (state, action) => {
-      state.isLoading = false
-      state.lists = action.payload
-    })
-    builder.addCase(removeLocationFromAllLists.rejected, (state) => {
-      state.isLoading = false
     })
 
     // fetchLocationsForList
