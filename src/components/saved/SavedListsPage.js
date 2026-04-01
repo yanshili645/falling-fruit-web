@@ -32,19 +32,37 @@ const SavedListsPage = () => {
       {lists.length === 0 ? (
         <p>No lists found.</p>
       ) : (
-        <ul>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {lists.map((list) => (
-            <li key={list.listId}>
-              <Link to={`/lists/${list.listId}`}>{list.name}</Link> (
-              {list.locationIds.length}{' '}
-              {list.locationIds.length === 1 ? 'location' : 'locations'})
-              <br />
-              <small>
+            <div
+              key={list.listId}
+              style={{
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                padding: '1rem 1.25rem',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+                backgroundColor: '#fff',
+              }}
+            >
+              <h2 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>
+                {list.name}
+              </h2>
+              <Link to={`/lists/${list.listId}`}>
+                {list.locationIds.length}{' '}
+                {list.locationIds.length === 1 ? 'location' : 'locations'}
+              </Link>
+              <p
+                style={{
+                  margin: '0.5rem 0 0 0',
+                  color: '#888',
+                  fontSize: '0.85rem',
+                }}
+              >
                 {`Last updated: ${formatISOString(list.updatedAt ?? list.createdAt, language)}`}
-              </small>
-            </li>
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </Page>
   )
