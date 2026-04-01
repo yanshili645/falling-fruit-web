@@ -50,11 +50,12 @@ const ExpandRow = styled.div`
   align-items: center;
   gap: 6px;
   padding: 0.6rem 1.25rem;
-  cursor: pointer;
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   user-select: none;
 
   &:hover {
-    background: ${theme.secondaryBackground};
+    background: ${({ $clickable }) =>
+      $clickable ? theme.secondaryBackground : 'transparent'};
   }
 `
 
@@ -190,13 +191,6 @@ const MenuOption = styled.button`
 `
 
 const LoadingText = styled.p`
-  padding: 0.5rem 1.25rem;
-  color: ${theme.secondaryText};
-  font-size: 0.9rem;
-  margin: 0;
-`
-
-const EmptyText = styled.p`
   padding: 0.5rem 1.25rem;
   color: ${theme.secondaryText};
   font-size: 0.9rem;
@@ -376,6 +370,7 @@ const ListCardComponent = ({ list }) => {
   const isListBusy = !!loadingLists[list.listId]
   const isLoadingLocations = !!loadingLocationsByListId[list.listId]
   const currentListLocations = locationsByListId[list.listId] || []
+  const hasLocations = list.locationIds.length > 0
 
   useEffect(() => {
     if (editing && inputRef.current) {
@@ -384,9 +379,12 @@ const ListCardComponent = ({ list }) => {
   }, [editing])
 
   const handleToggleExpand = () => {
+    if (!hasLocations) {
+      return
+    }
     const next = !expanded
     setExpanded(next)
-    if (next && list.locationIds.length > 0) {
+    if (next) {
       dispatch(
         fetchLocationsForList({
           listId: list.listId,
@@ -463,8 +461,9 @@ const ListCardComponent = ({ list }) => {
       )}
 
       {/* Row 2: chevron + "x locations" expand toggle */}
-      <ExpandRow onClick={handleToggleExpand}>
-        {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+      <ExpandRow onClick={handleToggleExpand} $clickable={hasLocations}>
+        {hasLocations &&
+          (expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />)}
         <LocationCount>
           {list.locationIds.length}{' '}
           {list.locationIds.length === 1 ? 'location' : 'locations'}
@@ -476,8 +475,6 @@ const ListCardComponent = ({ list }) => {
         <>
           {isLoadingLocations ? (
             <LoadingText>Loading locations…</LoadingText>
-          ) : list.locationIds.length === 0 ? (
-            <EmptyText>No locations saved in this list.</EmptyText>
           ) : (
             <LocationList>
               {currentListLocations.map((location) => (
