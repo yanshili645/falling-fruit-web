@@ -219,7 +219,13 @@ const getLocationDisplayName = (location, typesAccess) => {
 
 /* ─── LocationRow ───────────────────────────────────────────────── */
 
-const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
+const LocationRow = ({
+  location,
+  listId,
+  isListBusy,
+  typesAccess,
+  onRemoved,
+}) => {
   const dispatch = useDispatch()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef(null)
@@ -249,6 +255,7 @@ const LocationRow = ({ location, listId, isListBusy, typesAccess }) => {
     setMenuOpen(false)
     if (window.confirm(`Remove "${displayName}" from the list?`)) {
       dispatch(removeLocationFromList({ listId, locationId: location.id }))
+      onRemoved(location.id)
     }
   }
 
@@ -287,10 +294,11 @@ const ListCardComponent = ({ list }) => {
   const [expanded, setExpanded] = useState(false)
   const [editing, setEditing] = useState(false)
   const [editName, setEditName] = useState(list.name)
+  const [localLocations, setLocalLocations] = useState([])
+  const [localLoading, setLocalLoading] = useState(false)
   const inputRef = useRef(null)
 
-  const { currentListLocations, isLoadingLocations, loadingLists } =
-    useSelector((state) => state.save)
+  const { loadingLists } = useSelector((state) => state.save)
   const { typesAccess } = useSelector((state) => state.type)
 
   const isListBusy = !!loadingLists[list.listId]
@@ -301,11 +309,19 @@ const ListCardComponent = ({ list }) => {
     }
   }, [editing])
 
-  const handleToggleExpand = () => {
+  const handleToggleExpand = async () => {
     const next = !expanded
     setExpanded(next)
     if (next && list.locationIds.length > 0) {
-      dispatch(fetchLocationsForList({ locationIds: list.locationIds }))
+      setLocalLoading(true)
+      try {
+        const result = await dispatch(
+          fetchLocationsForList({ locationIds: list.locationIds }),
+        ).unwrap()
+        setLocalLocations(result)
+      } finally {
+        setLocalLoading(false)
+      }
     }
   }
 
@@ -335,6 +351,10 @@ const ListCardComponent = ({ list }) => {
     if (window.confirm(`Delete "${list.name}"?`)) {
       dispatch(removeList({ listId: list.listId }))
     }
+  }
+
+  const handleLocationRemoved = (locationId) => {
+    setLocalLocations((prev) => prev.filter((loc) => loc.id !== locationId))
   }
 
   return (
@@ -387,19 +407,20 @@ const ListCardComponent = ({ list }) => {
       {/* Expanded location list */}
       {expanded && (
         <>
-          {isLoadingLocations ? (
+          {localLoading ? (
             <LoadingText>Loading locations…</LoadingText>
           ) : list.locationIds.length === 0 ? (
             <EmptyText>No locations saved in this list.</EmptyText>
           ) : (
             <LocationList>
-              {(currentListLocations || []).map((location) => (
+              {localLocations.map((location) => (
                 <LocationRow
                   key={location.id}
                   location={location}
                   listId={list.listId}
                   isListBusy={isListBusy}
                   typesAccess={typesAccess}
+                  onRemoved={handleLocationRemoved}
                 />
               ))}
             </LocationList>
