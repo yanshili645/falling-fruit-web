@@ -19,18 +19,18 @@ export interface SaveState {
   isLoading: boolean
   /** Per-list loading state: { [listId]: boolean } */
   loadingLists: Record<number, boolean>
-  /** Locations fetched for the currently viewed list */
-  currentListLocations: any[]
-  /** Loading flag for fetching locations of the current list */
-  isLoadingLocations: boolean
+  /** Locations fetched per list id: { [listId]: location[] } */
+  locationsByListId: Record<number, any[]>
+  /** Per-list loading flag for fetching locations: { [listId]: boolean } */
+  loadingLocationsByListId: Record<number, boolean>
 }
 
 const initialState: SaveState = {
   lists: [],
   isLoading: false,
   loadingLists: {},
-  currentListLocations: [],
-  isLoadingLocations: false,
+  locationsByListId: {},
+  loadingLocationsByListId: {},
 }
 
 // Fetch all lists from the backend
@@ -113,11 +113,10 @@ export const removeLocationFromAllLists = createAsyncThunk<
 })
 
 // Fetch full location data for all locationIds in a given list.
-// Inefficient: fires one HTTP request per location ID.
-// Payload: { locationIds: (string | number)[] }
+// Payload: { listId: number, locationIds: (string | number)[] }
 export const fetchLocationsForList = createAsyncThunk<
   any[],
-  { locationIds: number[] }
+  { listId: number; locationIds: number[] }
 >('save/fetchLocationsForList', async ({ locationIds }) => {
   const locations = await getLocationsByIds(locationIds)
   return locations
@@ -160,6 +159,8 @@ const saveSlice = createSlice({
     builder.addCase(removeList.fulfilled, (state, action) => {
       const { listId } = action.meta.arg
       delete state.loadingLists[listId]
+      delete state.locationsByListId[listId]
+      delete state.loadingLocationsByListId[listId]
       state.lists = action.payload
     })
     builder.addCase(removeList.rejected, (state, action) => {
@@ -240,16 +241,19 @@ const saveSlice = createSlice({
     })
 
     // fetchLocationsForList
-    builder.addCase(fetchLocationsForList.pending, (state) => {
-      state.isLoadingLocations = true
-      state.currentListLocations = []
+    builder.addCase(fetchLocationsForList.pending, (state, action) => {
+      const { listId } = action.meta.arg
+      state.loadingLocationsByListId[listId] = true
+      state.locationsByListId[listId] = []
     })
     builder.addCase(fetchLocationsForList.fulfilled, (state, action) => {
-      state.isLoadingLocations = false
-      state.currentListLocations = action.payload
+      const { listId } = action.meta.arg
+      delete state.loadingLocationsByListId[listId]
+      state.locationsByListId[listId] = action.payload
     })
-    builder.addCase(fetchLocationsForList.rejected, (state) => {
-      state.isLoadingLocations = false
+    builder.addCase(fetchLocationsForList.rejected, (state, action) => {
+      const { listId } = action.meta.arg
+      delete state.loadingLocationsByListId[listId]
     })
   },
 })

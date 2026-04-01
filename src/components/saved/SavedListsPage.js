@@ -289,11 +289,13 @@ const ListCardComponent = ({ list }) => {
   const [editName, setEditName] = useState(list.name)
   const inputRef = useRef(null)
 
-  const { currentListLocations, isLoadingLocations, loadingLists } =
+  const { locationsByListId, loadingLocationsByListId, loadingLists } =
     useSelector((state) => state.save)
   const { typesAccess } = useSelector((state) => state.type)
 
   const isListBusy = !!loadingLists[list.listId]
+  const isLoadingLocations = !!loadingLocationsByListId[list.listId]
+  const currentListLocations = locationsByListId[list.listId] || []
 
   useEffect(() => {
     if (editing && inputRef.current) {
@@ -305,7 +307,12 @@ const ListCardComponent = ({ list }) => {
     const next = !expanded
     setExpanded(next)
     if (next && list.locationIds.length > 0) {
-      dispatch(fetchLocationsForList({ locationIds: list.locationIds }))
+      dispatch(
+        fetchLocationsForList({
+          listId: list.listId,
+          locationIds: list.locationIds,
+        }),
+      )
     }
   }
 
@@ -393,7 +400,7 @@ const ListCardComponent = ({ list }) => {
             <EmptyText>No locations saved in this list.</EmptyText>
           ) : (
             <LocationList>
-              {(currentListLocations || []).map((location) => (
+              {currentListLocations.map((location) => (
                 <LocationRow
                   key={location.id}
                   location={location}
