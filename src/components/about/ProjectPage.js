@@ -264,6 +264,8 @@ const Project = () => {
         {' · '}
         <b dir="ltr">Maria Rosa Puig</b> – <span dir="ltr">Español</span>
         {' · '}
+        <b dir="ltr">Max Macfarlane</b> – <span dir="ltr">日本語</span>
+        {' · '}
         <b dir="ltr">Michela Pasquali</b> – <span dir="ltr">Italiano</span>
         {' · '}
         <b dir="ltr">Monica Breval Listán</b> – <span dir="ltr">Español</span>

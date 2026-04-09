@@ -181,8 +181,68 @@
         "ソースは私の所有地にあります",
         "所有者からソースを追加する許可を得ています",
         "ソースは公有地にあります",
-        "ソースは私有地にありますが、公有地にはみ出しています"
+        "ソースは私有地にありますが、公有地にはみ出しています",
+        "ソースは私有地にあります（採取前に許可を求めてください）"
+      ],
+      "access_short": [
+        "所有者が追加",
+        "所有者が許可",
+        "公共",
+        "私有地だが張り出している",
+        "私有地"
+      ],
+      "fruiting": [
+        "花",
+        "未熟な果実",
+        "熟した果実"
       ]
+    },
+    "init": {
+      "cancel": "場所の選択をキャンセル",
+      "choose_instructions": "新しい場所の位置を選択してください。",
+      "confirm": "場所の選択を確認",
+      "edit_instructions": "新しい場所の位置を編集してください。",
+      "position_too_close": "既存の場所とは異なる位置を選択してください"
+    },
+    "overview": {
+      "added_by": "{{name}}によって追加されました",
+      "added_by_you": "あなたによって追加されました",
+      "date_edited": "{{date}}に更新されました",
+      "imported_from": "{{name}}からインポートされました",
+      "season": {
+        "in_season": "{{start_month}}から{{stop_month}}まで旬です",
+        "year_round": "一年中"
+      },
+      "title": "概要"
+    }
+  },
+  "menu": {
+    "add_new_location": "場所を追加",
+    "add_review": "レビューを追加",
+    "edit_location": "場所を編集",
+    "edit_review": "レビューを編集",
+    "filters": "フィルター",
+    "list": "リスト",
+    "settings": "設定",
+    "zoom_in_to_add_location": "ズームインして場所を追加"
+  },
+  "new_type": {
+    "add_type_label": "タイプを追加:",
+    "form": {
+      "add_name": "名前を追加",
+      "language": "言語",
+      "notes": "メモ",
+      "notes_placeholder": "説明、Wikipediaリンク、分類情報など...",
+      "pending_notice": "注意：すべての新しいタイプはデフォルトで保留中に設定されます。管理者のみが保留中でないタイプを追加できます。",
+      "remove": "削除"
+    },
+    "title": "新しいタイプを追加"
+  },
+  "pages": {
+    "about": {
+      "about_the_site": "プロジェクトについて",
+      "advisors": "顧問委員会",
+      "alan_gibson_bio_html": "アランは常に冒険と探検を楽しんできました。彼は幼い子供たちをアウトドアライフスタイルに導く方法として採集を始めました。彼は<a href=\"http://theurbaneforager.blogspot.com\">Urbane Forager</a>ブログを執筆し、<a href=\"https://www.amazon.co.uk/Urbane-Forager-Fruit-Nuts-Free/dp/1785073001\">Urbane Forager: Fruit and Nuts For Free</a>という本を出版しました。彼は公共公園での採集を正当化し、故郷の英国サウサンプトンにコミュニティ果樹園を設立しました。"
     }
   }
 }
