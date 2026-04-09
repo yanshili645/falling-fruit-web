@@ -1,0 +1,188 @@
+{
+  "confirm_message": {
+    "delete_location": "この場所を削除してもよろしいですか？",
+    "delete_review": "このレビューを削除してもよろしいですか？"
+  },
+  "devise": {
+    "confirmations": {
+      "confirm_your_email": "メールアドレスを確認してください",
+      "confirmed": "メールアドレスが正常に確認されました。",
+      "no_token": "確認メールからアクセスしない限り、このページにアクセスすることはできません。確認メールからアクセスしている場合は、提供された完全なURLを使用していることを確認してください。",
+      "send_instructions": "数分以内にメールアドレスの確認方法が記載されたメールが届きます。"
+    },
+    "failure": {
+      "already_authenticated": "既にログインしています。"
+    },
+    "passwords": {
+      "no_token": "パスワードリセットメールからアクセスしない限り、このページにアクセスすることはできません。パスワードリセットメールからアクセスしている場合は、提供された完全なURLを使用していることを確認してください。",
+      "send_instructions": "数分以内にパスワードのリセット方法が記載されたメールが届きます。",
+      "updated_not_active": "パスワードが正常に変更されました。"
+    },
+    "registrations": {
+      "update_needs_confirmation": "アカウントが正常に更新されましたが、新しいメールアドレスの確認が必要です。メールを確認して、確認リンクをクリックして新しいメールアドレスを確認してください。",
+      "updated": "アカウントが正常に更新されました。"
+    }
+  },
+  "error_message": {
+    "api": {
+      "fetch_clusters_failed": "クラスターの取得エラー: {{message}}",
+      "fetch_filter_counts_failed": "フィルターカウントの取得エラー: {{message}}",
+      "fetch_import_failed": "データセット{{id}}の取得エラー: {{message}}",
+      "fetch_location_changes_failed": "ロケーション変更の取得に失敗しました: {{message}}",
+      "fetch_location_failed": "ロケーション{{id}}の取得エラー: {{message}}",
+      "fetch_locations_failed": "ロケーションの取得エラー: {{message}}",
+      "fetch_review_failed": "レビュー{{id}}の取得エラー: {{message}}",
+      "fetch_user_failed": "ユーザー{{id}}の取得エラー: {{message}}",
+      "location_deletion_failed": "ロケーションの削除に失敗しました: {{message}}",
+      "location_edit_failed": "ロケーションの編集に失敗しました: {{message}}",
+      "location_submission_failed": "ロケーションの送信に失敗しました: {{message}}",
+      "photo_upload_failed": "写真のアップロードに失敗しました: {{message}}",
+      "report_submission_failed": "レポートの送信に失敗しました: {{message}}",
+      "review_deletion_failed": "レビューの削除に失敗しました: {{message}}",
+      "review_edit_failed": "レビューの編集に失敗しました: {{message}}",
+      "review_submission_failed": "レビューの送信に失敗しました: {{message}}",
+      "street_view_unavailable": "ロケーション{{id}}のストリートビューは利用できません",
+      "type_add_failed": "新しいタイプの追加に失敗しました: {{message}}"
+    },
+    "auth": {
+      "confirmation_failed": "アカウントの確認に失敗しました: {{message}}",
+      "expired_refresh_token": "一定期間操作がなかったため、サインアウトしました。再度サインインしてください。",
+      "password_set_failed": "新しいパスワードの設定に失敗しました: {{message}}",
+      "profile_update_failed": "プロフィールの更新に失敗しました: {{message}}",
+      "resend_confirmation_failed": "確認メールの再送信に失敗しました: {{message}}",
+      "reset_password_failed": "パスワードのリセットに失敗しました: {{message}}",
+      "signin_failed": "サインインに失敗しました: {{message}}",
+      "signup_failed": "サインアップに失敗しました: {{message}}"
+    },
+    "connectivity": {
+      "you_are_back_online": "オンラインに戻りました。",
+      "you_are_offline": "オフラインです。"
+    },
+    "geolocation": {
+      "code_2": "位置情報が利用できません: {{message}}",
+      "code_3": "位置情報の取得がタイムアウトしました: {{message}}",
+      "denied": "位置情報の使用許可が拒否されました。位置情報を有効にするには、ブラウザの設定で位置情報の共有を許可し、ページを更新してください。",
+      "not_supported": "位置情報がサポートされていません"
+    },
+    "language_changed_refresh_to_reload_map": "言語が変更されました。ページを更新して地図を再読み込みしてください",
+    "results_unavailable": "結果を取得できません",
+    "unknown_error": "不明なエラー"
+  },
+  "filter": {
+    "all_types": "すべてのタイプ",
+    "clear": "クリア",
+    "include_locations_from_tree_inventories": "樹木台帳の位置情報を含む",
+    "select_shown": "表示されているものをすべて選択",
+    "within_map_bounds": "地図の範囲内"
+  },
+  "form": {
+    "button": {
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "edit": "編集",
+      "reload": "再読み込み",
+      "report": "報告",
+      "reset": "リセット",
+      "restart": "再起動",
+      "review": "レビュー",
+      "submit": "\tefx\tefx\tefx",
+      "submitting": "\tefx\tefx中"
+    },
+    "error": {
+      "confirmation": "元の値と一致しません",
+      "must_be_different": "前の値とは異なる必要があります",
+      "too_short": "最低{{min}}文字必要です"
+    },
+    "not_signed_in": {
+      "continue": "続ける",
+      "do_not_ask_again": "今後表示しない",
+      "message": "サインインしていません。アカウントなしで続けるか、後でこの観察を追跡・管理するために先にサインインまたはサインアップしてください。",
+      "title": {
+        "add_location": "匿名で場所を追加しますか？",
+        "add_review": "匿名でレビューを追加しますか？",
+        "edit_location": "匿名で場所を編集しますか?"
+      }
+    },
+    "optional": "任意",
+    "required": "必須",
+    "search": "検索"
+  },
+  "glossary": {
+    "about": "について",
+    "account": "アカウント",
+    "activity": "アクティビティ",
+    "address": "住所",
+    "by_author": "{{author}}による",
+    "description": "説明",
+    "email": "メール",
+    "locations": {
+      "other": "場所"
+    },
+    "map": "地図",
+    "name": "名前",
+    "password": "パスワード",
+    "quality": "品質",
+    "review": {
+      "other": "レビュー"
+    },
+    "sign_up": "サインアップ",
+    "tree_inventory": {
+      "one": "樹木目録"
+    },
+    "type": {
+      "one": "タイプ",
+      "other": "タイプ"
+    },
+    "unverified": "未確認",
+    "yield": "収穫量"
+  },
+  "info_message": {
+    "cannot_delete_location_with_other_reviews": "この場所には他のユーザーのレビューが含まれています。削除をリクエストするには、報告ボタンをご使用ください。"
+  },
+  "layouts": {
+    "application": {
+      "menu": {
+        "in_the_press": "プレスで",
+        "sharing_the_harvest": "収穫の共有",
+        "the_data": "データ",
+        "the_project": "プロジェクト"
+      }
+    },
+    "back": "戻る",
+    "loading": "読み込み中..."
+  },
+  "list": {
+    "no_results": "結果が見つかりません",
+    "zoom_in": "地図をズームインして位置データを表示"
+  },
+  "locations": {
+    "add_new": "新規追加",
+    "add_similar": "類似を追加",
+    "edit_position": {
+      "cancel": "位置編集をキャンセル",
+      "confirm": "位置編集を確定",
+      "instructions": "位置を編集してください。"
+    },
+    "form": {
+      "access": "アクセス",
+      "comments": "コメント",
+      "comments_subtext": "更新情報、アクセスの問題、植物の健康状態...",
+      "description_subtext": "場所の詳細、アクセスの問題、植物の健康状態...",
+      "fruiting_status": "結実状況",
+      "position": "位置",
+      "season": "季節",
+      "season_start_to_stop_short": "から"
+    },
+    "index": {
+      "editmarker_html": "<b>ソースの位置に移動してください。</b><br><br>衛星ビューを確認してください - ソースは宇宙から見えるかもしれません！"
+    },
+    "infowindow": {
+      "access_mode": [
+        "ソースは私の所有地にあります",
+        "所有者からソースを追加する許可を得ています",
+        "ソースは公有地にあります",
+        "ソースは私有地にありますが、公有地にはみ出しています"
+      ]
+    }
+  }
+}
