@@ -71,6 +71,10 @@ const Review = ({
 }) => {
   const { t, i18n } = useTranslation()
   const dispatch = useDispatch()
+
+  const displayAuthor =
+    review.author ?? (review.user_id != null ? String(review.user_id) : null)
+
   return (
     <ReviewContainer $editable={editable}>
       {editable && (
@@ -97,13 +101,13 @@ const Review = ({
       )}
       {!editable && (
         <AuthorAndDateRow>
-          {review.author && (
+          {displayAuthor && (
             <>
               <span dir="auto">
                 {review.user_id ? (
-                  <Link to={`/users/${review.user_id}`}>{review.author}</Link>
+                  <Link to={`/users/${review.user_id}`}>{displayAuthor}</Link>
                 ) : (
-                  review.author
+                  displayAuthor
                 )}
               </span>
               {' · '}

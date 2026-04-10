@@ -94,6 +94,10 @@ const EntryOverview = () => {
     .map((id) => typesAccess.getType(id))
     .filter(Boolean)
 
+  const displayAuthor =
+    locationData.author ??
+    (locationData.user_id != null ? String(locationData.user_id) : null)
+
   const handleAddressClick = () => {
     if (isEmbed) {
       history.pushAndChangeView('/map', {
@@ -190,7 +194,7 @@ const EntryOverview = () => {
               </p>
             </IconBesideText>
           )}
-          {(locationData.import_id || locationData.author) && (
+          {(locationData.import_id || displayAuthor) && (
             <IconBesideText>
               {locationData.import_id ? (
                 <Data size={20} />
@@ -200,9 +204,9 @@ const EntryOverview = () => {
                 <User size={20} />
               )}
               <p>
-                {locationData.author && locationData.import_id ? (
+                {displayAuthor && locationData.import_id ? (
                   t('locations.overview.imported_from', {
-                    name: locationData.author,
+                    name: displayAuthor,
                   })
                 ) : (
                   <>
@@ -213,10 +217,10 @@ const EntryOverview = () => {
                         {t('locations.overview.added_by', { name: '' })}{' '}
                         {locationData.user_id ? (
                           <Link to={`/users/${locationData.user_id}`}>
-                            {locationData.author}
+                            {displayAuthor}
                           </Link>
                         ) : (
-                          locationData.author
+                          displayAuthor
                         )}
                       </>
                     )}
@@ -224,11 +228,11 @@ const EntryOverview = () => {
                 )}
                 {locationData.import_id && (
                   <>
-                    {locationData.author && ' ('}
+                    {displayAuthor && ' ('}
                     <Link to={`/imports/${locationData.import_id}`}>
                       #{locationData.import_id}
                     </Link>
-                    {locationData.author && ')'}
+                    {displayAuthor && ')'}
                   </>
                 )}
               </p>
